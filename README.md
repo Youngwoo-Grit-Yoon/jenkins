@@ -66,3 +66,30 @@ docker run --name jenkins-docker --rm --detach \
    docker build -t myjenkins-blueocean:2.375.2-1 .
    ```
    참고로 위 단계를 최초로 수행할 때 공식 Jenkins Docker 이미지를 다운로드할 것입니다.
+5. 하기 명령어를 이용하여 myjenkins-blueocean:2.375.2-1 이미지의 컨테이너를 실행합니다.
+```text
+docker run \
+  --name jenkins-blueocean \
+  --restart=on-failure \
+  --detach \
+  --network jenkins \
+  --env DOCKER_HOST=tcp://docker:2376 \
+  --env DOCKER_CERT_PATH=/certs/client \
+  --env DOCKER_TLS_VERIFY=1 \
+  --publish 8080:8080 \
+  --publish 50000:50000 \
+  --volume jenkins-data:/var/jenkins_home \
+  --volume jenkins-docker-certs:/certs/client:ro \
+  myjenkins-blueocean:2.375.2-1 
+```
+**Note:** 주석이 없는 하기 명령어를 이용하여 실행할 수 있습니다.
+```text
+docker run --name jenkins-blueocean --restart=on-failure --detach \
+  --network jenkins --env DOCKER_HOST=tcp://docker:2376 \
+  --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 \
+  --publish 8080:8080 --publish 50000:50000 \
+  --volume jenkins-data:/var/jenkins_home \
+  --volume jenkins-docker-certs:/certs/client:ro \
+  myjenkins-blueocean:2.375.2-1
+```
+6. Post-installation setup wizard(<https://www.jenkins.io/doc/book/installing/docker/#setup-wizard>)를 진행합니다.
