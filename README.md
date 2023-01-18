@@ -93,3 +93,9 @@ docker run --name jenkins-blueocean --restart=on-failure --detach \
   myjenkins-blueocean:2.375.2-1
 ```
 6. Post-installation setup wizard(<https://www.jenkins.io/doc/book/installing/docker/#setup-wizard>)를 진행합니다.
+## Post-installation setup wizard
+위자드를 통해서 Jenkins를 언락하고 플러그인을 통해 커스터마이징을 수행하며 Jenkins에 접근할 수 있는 첫 번째 Admin 계정을 생성할 수
+있습니다.
+### Unlocking Jenkins
+맨 처음 Jenkins 인스턴스에 접근하면 자동으로 생성된 패스워드를 이용하여 언락하도록 요청을 받습니다.
+1. `http://localhost:8080` 주소로 접근하여 **Unlock Jenkins** 페이지가 나타날 때까지 대기합니다.
