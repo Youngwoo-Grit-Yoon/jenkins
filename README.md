@@ -45,3 +45,24 @@ docker run --name jenkins-docker --rm --detach \
   --publish 2376:2376 \
   docker:dind --storage-driver overlay2
 ```
+4. 하기 두 단계를 통해서 공식 Jenkins Docker 이미지의 커스텀을 수행합니다.
+   1. 하기 내용을 이용하여 Dockerfile을 생성합니다.
+   ```text
+   FROM jenkins/jenkins:2.375.2
+   USER root
+   RUN apt-get update && apt-get install -y lsb-release
+   RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+    https://download.docker.com/linux/debian/gpg
+   RUN echo "deb [arch=$(dpkg --print-architecture) \
+    signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+    https://download.docker.com/linux/debian \
+    $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+   RUN apt-get update && apt-get install -y docker-ce-cli
+   USER jenkins
+   RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
+   ```
+   2. 상기 Dockerfile을 이용하여 새로운 Docker 이미지를 빌드하고 의미있는 이름을 부여합니다.
+   ```text
+   docker build -t myjenkins-blueocean:2.375.2-1 .
+   ```
+   참고로 위 단계를 최초로 수행할 때 공식 Jenkins Docker 이미지를 다운로드할 것입니다.
