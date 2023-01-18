@@ -99,3 +99,7 @@ docker run --name jenkins-blueocean --restart=on-failure --detach \
 ### Unlocking Jenkins
 맨 처음 Jenkins 인스턴스에 접근하면 자동으로 생성된 패스워드를 이용하여 언락하도록 요청을 받습니다.
 1. `http://localhost:8080` 주소로 접근하여 **Unlock Jenkins** 페이지가 나타날 때까지 대기합니다.
+2. Jenkins 콘솔 로그에서 자동으로 생성된 alphanumeric 패스워드를 복사합니다.
+   - 만약 공식 jenkins/jenkins Docker 이미지를 이용하여 Jenkins를 실행 중이라면 하기 명령어를 이용하여 패스워드를 확인할 수 있습니다.  
+   `sudo docker exec ${CONTAINER_ID or CONTAINER_NAME} cat /var/jenkins_home/secrets/initialAdminPassword`
+3. 복사한 패스워드(dcd742ec21a34cb68851ca0921a8c61e)를 기입하여 **Continue** 버튼을 클릭합니다.
