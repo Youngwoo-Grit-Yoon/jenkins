@@ -103,3 +103,10 @@ docker run --name jenkins-blueocean --restart=on-failure --detach \
    - 만약 공식 jenkins/jenkins Docker 이미지를 이용하여 Jenkins를 실행 중이라면 하기 명령어를 이용하여 패스워드를 확인할 수 있습니다.  
    `sudo docker exec ${CONTAINER_ID or CONTAINER_NAME} cat /var/jenkins_home/secrets/initialAdminPassword`
 3. 복사한 패스워드(dcd742ec21a34cb68851ca0921a8c61e)를 기입하여 **Continue** 버튼을 클릭합니다.
+### Customizing Jenkins with plugins
+언락을 수행하고 나면 두 가지 선택을 할 수 있습니다.
+- Install suggested plugins : 권장하는 플러그인을 설치합니다.
+- Select plugins to install : 설치하고 싶은 플러그인을 선택합니다.
+
+**Note:** 무엇을 설치해야 할지 잘 모르겠다면 Install suggested plugins을 선택합니다. 이후에 `Manage Jenkins > Manage Plugins`를
+통해서 추가로 플러그인 설치를 진행할 수 있습니다.
