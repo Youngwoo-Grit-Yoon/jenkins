@@ -128,3 +128,7 @@ Customizing Jenkins with plugins을 끝내면 마지막으로 관리자 계정�
 ![](./img/main.png)  
 **Note:** 보안 이슈는 추후에 처리 요망  
 ![](./img/security_issue.png)
+## Initial Settings
+https://www.jenkins.io/doc/book/installing/initial-settings/  
+대부분의 Jenkins 구성 변경은 Jenkins 유저 인터페이스를 통해서 수행할 수 있습니다. 몇몇 구성 설정 값들은 Jenkins가 시작할 때만
+수정할 수 있습니다. 상기 링크를 클릭하면 해당 구성 설정 값들을 어떻게 변경할 수 있는지 확인할 수 있습니다.
