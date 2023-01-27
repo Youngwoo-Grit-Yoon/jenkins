@@ -113,9 +113,12 @@ docker run --name jenkins-blueocean --restart=on-failure --detach \
 통해서 추가로 플러그인 설치를 진행할 수 있습니다.
 ### Creating the first administrator user
 Customizing Jenkins with plugins을 끝내면 마지막으로 관리자 계정을 생성해야 합니다.
-#### 1. Create First Admin User 페이지가 나타나면 계정에 대한 자세항 사항을 필드에 기입하고 Save and Continue를 클릭합니다.
+#### 1. Create First Admin User 페이지가 나타나면 계정에 대한 자세항 사항을 필드에 기입하고 `Save and Continue`를 클릭합니다.
 `계정명` : youngwoo  
 `암호` : 1234  
 `암호 확인` : 1234  
 `이름` : Youngwoo Yoon  
 `이메일 주소` : zerocow1995@gmail.com
+#### 2. Instance Configuration 페이지가 나타나면 Jenkins URL을 확인하여 `Save and Finish`를 클릭합니다.
+`Jenkins URL` : http://192.168.53.9:8080/
+#### 3. Jenkins is almost ready! 화면이 나타나면 `Restart` 버튼을 클릭하여 Jenkins를 재시작 합니다.
