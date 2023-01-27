@@ -124,3 +124,5 @@ Customizing Jenkins with plugins을 끝내면 마지막으로 관리자 계정�
 #### 3. Jenkins is almost ready! 화면이 나타나면 `Restart` 버튼을 클릭하여 Jenkins를 재시작 합니다.
 1분 후에 화면이 자동으로 새로고침 되지 않는다면 수동으로 새로고침 합니다.
 #### 4. 새로고침 후 Welcome to Jenkins! 화면이 나타납니다. 로그인을 수행합니다.
+![](./img/login.png)
+![](./img/main.png)
