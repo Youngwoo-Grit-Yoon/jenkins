@@ -205,3 +205,31 @@ node {  --> (1)
 (6) "Deploy" 스테이지를 정의합니다.  
 (7) "Deploy" 스테이지와 관련된 스텝들을 수행합니다.
 ### Pipeline example
+하기 예시는 선언형 파이프라인 문법을 사용한 `Jenkinsfile`입니다.
+```text
+Jenkinsfile (Declarative Pipeline)
+pipeline { 
+    agent any 
+    options {
+        skipStagesAfterUnstable()
+    }
+    stages {
+        stage('Build') { 
+            steps { 
+                sh 'make' 
+            }
+        }
+        stage('Test'){
+            steps {
+                sh 'make check'
+                junit 'reports/**/*.xml' 
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'make publish'
+            }
+        }
+    }
+}
+```
