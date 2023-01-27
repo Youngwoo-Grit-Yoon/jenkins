@@ -240,5 +240,5 @@ pipeline { --> (1)
 (5) `sh` is a Pipeline step (provided by the Pipeline: Nodes and Processes plugin) that executes the given shell command.  
 (6) `junit` is another Pipeline step (provided by the JUnit plugin) for aggregating test reports.  
 (7) `sh` is a Pipeline step (provided by the Pipeline: Nodes and Processes plugin) that executes the given shell command.  
-더 자세한 파이프라인 문법에 대해서는 하기 링크를 참고한다.  
+더 자세한 파이프라인 문법에 대해서는 하기 링크를 참고하세요.  
 https://www.jenkins.io/doc/book/pipeline/syntax/
