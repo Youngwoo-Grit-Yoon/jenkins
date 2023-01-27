@@ -132,3 +132,17 @@ Customizing Jenkins with plugins을 끝내면 마지막으로 관리자 계정�
 https://www.jenkins.io/doc/book/installing/initial-settings/  
 대부분의 Jenkins 구성 변경은 Jenkins 유저 인터페이스를 통해서 수행할 수 있습니다. 몇몇 구성 설정 값들은 Jenkins가 시작할 때만
 수정할 수 있습니다. 상기 링크를 클릭하면 해당 구성 설정 값들을 어떻게 변경할 수 있는지 확인할 수 있습니다.
+## Flowchart of CD Scenario in Jenkins Pipeline
+![](./img/flowchart.png)
+## Pipeline Concepts
+하기에 Pipeline 관련 용어 및 문법에 대해서 설명합니다.
+### Pipeline
+`Pipeline`은 사용자가 정의한 CD pipeline 모델입니다. Pipeline의 코드는 사용자의 전체 빌드 프로세스를 정의하는데, 일반적으로
+애플리케이션을 빌드, 테스트, 배포하는 stages를 포함합니다. 또한 `pipeline` 블록은 Declartive Pipeline 문법의 핵심 요소
+입니다.
+### Node
+`Node`는 Jenkins 환경의 일부인 머신이며 하나의 Pipeline을 수행할 수 있습니다. 또한 `Node` 블록은 Scripted Pipeline 문법의 핵심
+요소 입니다.
+### Stage
+`Stage` 블록은 전체 Pipeline(예를 들면, "Build", "Test", "Deploy")을 통해서 수행되는 업무들의 구별되는 부분 집합인데,
+많은 플러그인들에 의해서 Jenkins Pipeline의 상태/진행 현황을 시각화 하거나 표현하는데 사용합니다.
