@@ -111,3 +111,11 @@ docker run --name jenkins-blueocean --restart=on-failure --detach \
 
 **Note:** 무엇을 설치해야 할지 잘 모르겠다면 Install suggested plugins을 선택합니다. 이후에 `Manage Jenkins > Manage Plugins`를
 통해서 추가로 플러그인 설치를 진행할 수 있습니다.
+### Creating the first administrator user
+Customizing Jenkins with plugins을 끝내면 마지막으로 관리자 계정을 생성해야 합니다.
+#### 1. Create First Admin User 페이지가 나타나면 계정에 대한 자세항 사항을 필드에 기입하고 Save and Continue를 클릭합니다.
+`계정명` : youngwoo  
+`암호` : 1234  
+`암호 확인` : 1234  
+`이름` : Youngwoo Yoon  
+`이메일 주소` : zerocow1995@gmail.com
