@@ -122,3 +122,4 @@ Customizing Jenkins with plugins을 끝내면 마지막으로 관리자 계정�
 #### 2. Instance Configuration 페이지가 나타나면 Jenkins URL을 확인하여 `Save and Finish`를 클릭합니다.
 `Jenkins URL` : http://192.168.53.9:8080/
 #### 3. Jenkins is almost ready! 화면이 나타나면 `Restart` 버튼을 클릭하여 Jenkins를 재시작 합니다.
+1분 후에 화면이 자동으로 새로고침 되지 않는다면 수동으로 새로고침 합니다.
