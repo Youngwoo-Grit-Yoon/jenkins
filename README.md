@@ -208,21 +208,21 @@ node {  --> (1)
 하기 예시는 선언형 파이프라인 문법을 사용한 `Jenkinsfile`입니다.
 ```text
 Jenkinsfile (Declarative Pipeline)
-pipeline { 
-    agent any 
+pipeline { --> (1)
+    agent any --> (2)
     options {
         skipStagesAfterUnstable()
     }
     stages {
-        stage('Build') { 
-            steps { 
-                sh 'make' 
+        stage('Build') { --> (3)
+            steps { --> (4)
+                sh 'make' --> (5)
             }
         }
         stage('Test'){
             steps {
                 sh 'make check'
-                junit 'reports/**/*.xml' 
+                junit 'reports/**/*.xml' --> (7)
             }
         }
         stage('Deploy') {
@@ -233,3 +233,12 @@ pipeline {
     }
 }
 ```
+(1) `pipeline` is Declarative Pipeline-specific syntax that defines a "block" containing all content and instructions for executing the entire Pipeline.  
+(2) `agent` is Declarative Pipeline-specific syntax that instructs Jenkins to allocate an executor (on a node) and workspace for the entire Pipeline.  
+(3) `stage` is a syntax block that describes a stage of this Pipeline. Read more about stage blocks in Declarative Pipeline syntax on the Pipeline syntax page. As mentioned above, stage blocks are optional in Scripted Pipeline syntax.  
+(4) `steps` is Declarative Pipeline-specific syntax that describes the steps to be run in this stage.  
+(5) `sh` is a Pipeline step (provided by the Pipeline: Nodes and Processes plugin) that executes the given shell command.  
+(6) `junit` is another Pipeline step (provided by the JUnit plugin) for aggregating test reports.  
+(7) `sh` is a Pipeline step (provided by the Pipeline: Nodes and Processes plugin) that executes the given shell command.  
+더 자세한 파이프라인 문법에 대해서는 하기 링크를 참고한다.  
+https://www.jenkins.io/doc/book/pipeline/syntax/
