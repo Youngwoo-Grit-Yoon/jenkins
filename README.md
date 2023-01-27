@@ -146,3 +146,32 @@ https://www.jenkins.io/doc/book/installing/initial-settings/
 ### Stage
 `Stage` 블록은 전체 Pipeline(예를 들면, "Build", "Test", "Deploy")을 통해서 수행되는 업무들의 구별되는 부분 집합인데,
 많은 플러그인들에 의해서 Jenkins Pipeline의 상태/진행 현황을 시각화 하거나 표현하는데 사용합니다.
+### Step
+하나의 업무를 의미합니다. 예를 들면, shell 명령어인 make를 실행하기 위해서 `sh step: sh 'make'`을 사용합니다.
+## Pipeline syntax overview
+하기에 Declarative Pipeline syntax 및 Scripted Pipeline syntax 문법의 차이를 보여줍니다.
+### Declarative Pipeline fundamentals
+선언형 파이프라인 문법에서는 `pipeline` 블록이 사용자의 전체 파이프라인을 통해서 완료되는 모든 업무를 정의합니다.
+```text
+Jenkinsfile (Declarative Pipeline)
+pipeline {
+    agent any --> (1)
+    stages {
+        stage('Build') { --> (2)
+            steps {
+                // --> (3)
+            }
+        }
+        stage('Test') { --> (4)
+            steps {
+                // --> (5)
+            }
+        }
+        stage('Deploy') { --> (6)
+            steps {
+                // --> (7)
+            }
+        }
+    }
+}
+```
