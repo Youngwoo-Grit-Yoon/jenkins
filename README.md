@@ -242,3 +242,16 @@ pipeline { --> (1)
 (7) `sh` is a Pipeline step (provided by the Pipeline: Nodes and Processes plugin) that executes the given shell command.  
 더 자세한 파이프라인 문법에 대해서는 하기 링크를 참고하세요.  
 https://www.jenkins.io/doc/book/pipeline/syntax/
+## Getting started with Pipeline 
+### Defining a Pipeline
+파이프라인은 다음의 3가지 방법을 이용하여 생성할 수 있다.
+- Blue Ocean을 이용하여 생성
+- classic UI를 이용하여 생성
+- SCM에서 생성
+
+하기 비디오는 선언형 및 스크립트형 파이프라인을 작성하는 기본적인 방법을 알려준다.  
+https://youtu.be/TiTrcFEsj7A
+### Through Blue Ocean
+https://www.jenkins.io/doc/book/pipeline/getting-started/#through-blue-ocean  
+만약 Jenkins 파이프라인을 처음 사용한다면 블루 오션 UI가 파이프라인 프로젝트를 설정하는데 도움을 줄 수 있다. 파이프라인 에디터를
+통해서 사용자의 Jenkinsfile을 자동으로 생성하고 작성해준다. 더 자세한 내용은 상기 링크를 클릭하여 살펴본다.
