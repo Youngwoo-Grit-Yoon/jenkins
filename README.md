@@ -255,3 +255,5 @@ https://youtu.be/TiTrcFEsj7A
 https://www.jenkins.io/doc/book/pipeline/getting-started/#through-blue-ocean  
 만약 Jenkins 파이프라인을 처음 사용한다면 블루 오션 UI가 파이프라인 프로젝트를 설정하는데 도움을 줄 수 있다. 파이프라인 에디터를
 통해서 사용자의 Jenkinsfile을 자동으로 생성하고 작성해준다. 더 자세한 내용은 상기 링크를 클릭하여 살펴본다.
+![](./img/pipeline.png)  
+![](./img/build.png)
