@@ -26,3 +26,33 @@ https://www.jenkins.io/doc/book/pipeline/docker/#workspace-synchronization
 https://www.jenkins.io/doc/book/pipeline/docker/#caching-data-for-containers
 ### Using multiple containers
 https://www.jenkins.io/doc/book/pipeline/docker/#using-multiple-containers
+### Using a Dockerfile
+For projects which require a more customized execution environment, Pipeline also supports building and running a
+container from a Dockerfile in the source repository. In contrast to the previous approach of using an "off-the-shelf"
+container, using the agent { dockerfile true } syntax will build a new image from a Dockerfile rather than pulling one
+from Docker Hub.  
+Re-using an example from above, with a more custom `Dockerfile`:
+```text
+Dockerfile
+FROM node:16.13.1-alpine
+
+RUN apk add -U subversion
+```
+By committing this to the root of the source repository, the `Jenkinsfile` can be changed to build a container based on
+this `Dockerfile` and then run the defined steps using that container:
+```text
+Jenkinsfile (Declarative Pipeline)
+pipeline {
+    agent { dockerfile true }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+                sh 'svn --version'
+            }
+        }
+    }
+}
+```
+The agent { dockerfile true } syntax supports a number of other options which are described in more detail in the
+Pipeline Syntax section.
