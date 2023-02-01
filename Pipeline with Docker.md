@@ -20,3 +20,9 @@ pipeline {
     }
 }
 ```
+### Workspace synchronization
+https://www.jenkins.io/doc/book/pipeline/docker/#workspace-synchronization
+### Caching data for containers
+https://www.jenkins.io/doc/book/pipeline/docker/#caching-data-for-containers
+### Using multiple containers
+https://www.jenkins.io/doc/book/pipeline/docker/#using-multiple-containers
