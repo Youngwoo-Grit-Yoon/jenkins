@@ -14,4 +14,6 @@ init
 [root@3a0707c64760 /]# yum install -y git
 ... 생략 ...
 Complete!
+[root@3a0707c64760 /]# git --version
+git version 1.8.3.1
 ```
