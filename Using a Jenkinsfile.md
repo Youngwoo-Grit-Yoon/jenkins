@@ -86,3 +86,6 @@ pipeline {
 }
 ```
 (1) Accessing the currentBuild.result variable allows the Pipeline to determine if there were any test failures. In which case, the value would be UNSTABLE.
+### 맺음말
+나머지 Jenkinsfile 환경변수 등에 대한 사용법은 문서를 살펴본다.  
+https://www.jenkins.io/doc/book/pipeline/jenkinsfile/
