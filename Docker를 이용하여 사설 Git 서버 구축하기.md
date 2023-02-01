@@ -16,6 +16,10 @@ docker exec -it git-server /bin/bash
 ```shell
 yum install -y epel-release
 ```
+컨테이너 내부 root 계정의 비밀번호를 설정한다.
+```shell
+echo 'root:password' | chpasswd
+```
 하기 명령어를 수행하여 git-server 컨테이너 내부로 이동한 후 Git을 설치한다.  
 ```text
 [root@localhost ~]# docker exec -it git-server /bin/bash
