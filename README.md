@@ -251,6 +251,7 @@ https://www.jenkins.io/doc/book/pipeline/syntax/
 
 하기 비디오는 선언형 및 스크립트형 파이프라인을 작성하는 기본적인 방법을 알려준다.  
 https://youtu.be/TiTrcFEsj7A  
+하기 이미지는 유트브 실습 내용을 캡처하여 첨부한 것이다.  
 ![](./img/pipeline.png)  
 ![](./img/build.png)  
 ![](./img/dashboard.png)
@@ -258,3 +259,10 @@ https://youtu.be/TiTrcFEsj7A
 https://www.jenkins.io/doc/book/pipeline/getting-started/#through-blue-ocean  
 만약 Jenkins 파이프라인을 처음 사용한다면 블루 오션 UI가 파이프라인 프로젝트를 설정하는데 도움을 줄 수 있다. 파이프라인 에디터를
 통해서 사용자의 Jenkinsfile을 자동으로 생성하고 작성해준다. 더 자세한 내용은 상기 링크를 클릭하여 살펴본다.
+### Through the classic UI
+상기 유투브 링크 내용과 동일
+### In SCM
+https://www.jenkins.io/doc/book/pipeline/getting-started/#defining-a-pipeline-in-scm
+## 맺음말
+지금까지 Jenkins 설치부터 간단한 Pipeline 생성, 작성, 빌드까지 실습해보았다. 다음 문서에서는 Jenkinsfile을 이용하는 법,
+파이프라인과 도커를 이용하는 법을 살펴보자.
