@@ -56,3 +56,9 @@ pipeline {
 ```
 The agent { dockerfile true } syntax supports a number of other options which are described in more detail in the
 Pipeline Syntax section.
+### Building containers
+https://www.jenkins.io/doc/book/pipeline/docker/#building-containers
+### Using a remote Docker server
+https://www.jenkins.io/doc/book/pipeline/docker/#using-a-remote-docker-server
+### Using a custom registry
+https://www.jenkins.io/doc/book/pipeline/docker/#custom-registry
