@@ -8,6 +8,14 @@ docker run --name git-server \
 centos:7.9.2009 \
 init
 ```
+git-server 컨테이너 내부로 이동한다.
+```shell
+docker exec -it git-server /bin/bash
+```
+패키지를 최신화 한다.
+```shell
+yum install -y epel-release
+```
 하기 명령어를 수행하여 git-server 컨테이너 내부로 이동한 후 Git을 설치한다.  
 ```text
 [root@localhost ~]# docker exec -it git-server /bin/bash
