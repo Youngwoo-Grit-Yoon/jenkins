@@ -1,9 +1,11 @@
 ## Docker를 이용하여 사설 Git 서버 구축하기
-Base 이미지 CentOS:7.9.2009를 이용하여 Git을 설치할 컨테이너를 생성한다.
+### git-server 컨테이너 생성 및 SSH 서버 설치
+Base 이미지 CentOS:7.9.2009를 이용하여 Git을 설치할 컨테이너를 생성한다.  
+6000번 포트를 컨테이너 내부의 SSH 서비스 22번 포트에 바인딩 한다.
 ```shell
 docker run --name git-server \
 -d \
---privileged \
+--privileged=true \
 -p 6000:22 \
 centos:7.9.2009 \
 init
@@ -20,12 +22,22 @@ yum install -y epel-release
 ```shell
 echo 'root:password' | chpasswd
 ```
-하기 명령어를 수행하여 git-server 컨테이너 내부로 이동한 후 Git을 설치한다.  
+SSH를 설치한다.
+```shell
+yum install -y openssh-server
+```
+sshd 설정 파일을 수정한다.
 ```text
-[root@localhost ~]# docker exec -it git-server /bin/bash
-[root@3a0707c64760 /]# yum install -y git
+vi /etc/ssh/sshd_config
 ... 생략 ...
-Complete!
-[root@3a0707c64760 /]# git --version
-git version 1.8.3.1
+#Port 22 --> 주석 제거
+```
+SSH 서비스 재기동 후 SSH 접근을 시도해본다.
+```shell
+systemctl restart sshd
+```
+### Git 설치
+Git을 설치한다.  
+```shell
+yum install -y git
 ```
