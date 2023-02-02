@@ -60,3 +60,7 @@ useradd youngwoo -m -s /bin/bash
 echo 'youngwoo:password' | chpasswd
 chown -R youngwoo:youngwoo /opt/git/youngwoo
 ```
+저장소 복사를 시도해본다.
+```text
+
+```
