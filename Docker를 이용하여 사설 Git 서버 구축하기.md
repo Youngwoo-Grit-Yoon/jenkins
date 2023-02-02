@@ -44,3 +44,17 @@ Git을 설치한다.
 ```shell
 yum install -y git
 ```
+```text
+[root@d880e49ceaaa /]# git --version
+git version 1.8.3.1
+```
+저장소를 생성한다.
+```text
+[root@d880e49ceaaa opt]# mkdir -p /opt/git/youngwoo/youngwoo.git
+[root@d880e49ceaaa opt]# git init --bare /opt/git/youngwoo/youngwoo.git/
+Initialized empty Git repository in /opt/git/youngwoo/youngwoo.git/
+```
+계정을 생성한다.
+```text
+
+```
