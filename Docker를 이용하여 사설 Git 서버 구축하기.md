@@ -75,3 +75,13 @@ Date:   Thu Feb 2 11:14:56 2023 +0900
 
     first commit
 ```
+Jenkins에서 해당 Git 저장소에 접근을 위해서 Jenkins가 설치되어 있는 서버에서 하기 명령어 수행을 통해
+known_hosts에 등록한다.
+```text
+[root@localhost ~]# git ls-remote -h youngwoo@192.168.53.9:6000/opt/git/youngwoo/youngwoo.git HEAD
+The authenticity of host '192.168.53.9 (192.168.53.9)' can't be established.
+ECDSA key fingerprint is SHA256:X2WMP59ac0hlNJfaRYnRDLaUSnSUoNR67dk+apmH/RA.
+ECDSA key fingerprint is MD5:23:40:eb:76:75:6e:68:b2:d8:b5:ba:bb:83:f3:72:aa.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '192.168.53.9' (ECDSA) to the list of known hosts.
+```
