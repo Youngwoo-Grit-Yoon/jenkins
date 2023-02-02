@@ -61,6 +61,17 @@ echo 'youngwoo:password' | chpasswd
 chown -R youngwoo:youngwoo /opt/git/youngwoo
 ```
 저장소 복사를 시도해본다.
+```shell
+git clone ssh://youngwoo@192.168.53.9:6000/opt/git/youngwoo/youngwoo.git .
+```
+README.txt 파일을 생성하여 Commit, Push 후 로그를 확인해본다.  
+참고로 `git branch -M main` 명령어를 선행한다.
 ```text
+YYW@LAPTOP-TQP4NO85 MINGW64 ~/Desktop/새 폴더 (main)
+$ git log --all
+commit c60597d9f46fe5e9130d0e1fe09c9e6020e57922 (HEAD -> main, origin/main)
+Author: Youngwoo-Grit-Yoon <macair1995@naver.com>
+Date:   Thu Feb 2 11:14:56 2023 +0900
 
+    first commit
 ```
