@@ -56,5 +56,7 @@ Initialized empty Git repository in /opt/git/youngwoo/youngwoo.git/
 ```
 계정을 생성한다.
 ```text
-
+useradd youngwoo -m -s /bin/bash
+echo 'youngwoo:password' | chpasswd
+chown -R youngwoo:youngwoo /opt/git/youngwoo
 ```
