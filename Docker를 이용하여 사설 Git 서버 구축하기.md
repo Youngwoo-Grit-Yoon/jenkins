@@ -36,6 +36,9 @@ SSH 서비스 재기동 후 SSH 접근을 시도해본다.
 ```shell
 systemctl restart sshd
 ```
+```shell
+ssh -l root -p 6000 localhost
+```
 ### Git 설치
 Git을 설치한다.  
 ```shell
