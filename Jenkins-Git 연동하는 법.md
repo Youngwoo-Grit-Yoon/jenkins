@@ -67,3 +67,7 @@ systemctl restart sshd
 ```
 (9) Jenkins 화면으로 이동하면 빨간 문구가 사라진 것을 확인할 수 있습니다. Credentials는 이전에 생성한 것을 선택합니다.  
 ![](./img/scm6.png)  
+(10) Jenkinsfile에 하기 내용을 입력하고 Git 서버로 Push 후 빌드를 수행합니다.
+```text
+
+```
