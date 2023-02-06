@@ -48,4 +48,22 @@ Jenkins에 Credentials를 등록할 때에는 SSH 개인키가 필요합니다. 
 ![](./img/scm4.png)  
 ![](./img/scm5.png)  
 
-(7) 
+(7) Git 레포지토리 서버에 공개키를 등록해야 합니다.  
+먼저 Git 서버로 접속하여 youngwoo 계정으로 로그인 후 홈 디렉토리의 .ssh 디렉터리로 이동합니다.
+```text
+[youngwoo@d880e49ceaaa .ssh]$ ls -ltih
+total 4.0K
+36825643 -rw-r--r-- 1 youngwoo youngwoo 181 Feb  6 07:03 known_hosts
+```
+authorized_keys 파일이 없으므로 생성해주고 755 권한을 부여합니다.
+```text
+touch authorized_keys
+chmod 755 authorized_keys
+```
+이후 아까 복사한 id_rsa.pub 키를 복사해서 붙여 넣습니다.  
+(8) 하기 명령어를 수행하여 sshd를 재시작 합니다.
+```text
+systemctl restart sshd
+```
+(9) Jenkins 화면으로 이동하면 빨간 문구가 사라진 것을 확인할 수 있습니다. Credentials는 이전에 생성한 것을 선택합니다.  
+![](./img/scm6.png)  
