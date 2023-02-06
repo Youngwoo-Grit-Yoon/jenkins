@@ -64,16 +64,19 @@ chown -R youngwoo:youngwoo /opt/git/youngwoo
 ```shell
 git clone ssh://youngwoo@192.168.53.9:6000/opt/git/youngwoo/youngwoo.git .
 ```
-README.txt 파일을 생성하여 Commit, Push 후 로그를 확인해본다.  
-참고로 `git branch -M main` 명령어를 선행한다.
+README.txt 파일을 생성 후 하기 명령어를 순서대로 실행한다.
 ```text
-YYW@LAPTOP-TQP4NO85 MINGW64 ~/Desktop/새 폴더 (main)
-$ git log --all
-commit c60597d9f46fe5e9130d0e1fe09c9e6020e57922 (HEAD -> main, origin/main)
+touch README.md
+git add --all
+git commit -m "first commit"
+git push origin master
+git log --all
+commit 2104a2a0b3a9cc92cb3db3f76fe98c14c37c1b40 (HEAD -> master, origin/master)
 Author: Youngwoo-Grit-Yoon <macair1995@naver.com>
-Date:   Thu Feb 2 11:14:56 2023 +0900
+Date:   Mon Feb 6 13:30:41 2023 +0900
 
     first commit
+
 ```
 Jenkins에서 해당 Git 저장소로의 접근을 위해서 Jenkins가 설치되어 있는 도커 컨테이너에서 하기 명령어 수행을 통해
 known_hosts에 등록한다.
