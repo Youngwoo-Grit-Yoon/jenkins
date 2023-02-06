@@ -75,7 +75,7 @@ Date:   Thu Feb 2 11:14:56 2023 +0900
 
     first commit
 ```
-Jenkins에서 해당 Git 저장소에 접근을 위해서 Jenkins가 설치되어 있는 서버에서 하기 명령어 수행을 통해
+Jenkins에서 해당 Git 저장소로의 접근을 위해서 Jenkins가 설치되어 있는 도커 컨테이너에서 하기 명령어 수행을 통해
 known_hosts에 등록한다.
 ```text
 [root@localhost ~]# git ls-remote -h youngwoo@192.168.53.9:6000/opt/git/youngwoo/youngwoo.git HEAD
