@@ -69,5 +69,18 @@ systemctl restart sshd
 ![](./img/scm6.png)  
 (10) Jenkinsfile에 하기 내용을 입력하고 Git 서버로 Push 후 빌드를 수행합니다.
 ```text
+pipeline {
+    agent any
 
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
 ```
+![](./img/scm7.png)  
+![](./img/scm8.png)  
+![](./img/scm9.png)  
