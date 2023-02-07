@@ -38,3 +38,15 @@ docker push localhost:7000/python:3.8
 ### Docker Registry v2 서버에서 Image 지우는 법
 Docker 이미지는 도커 이미지 자체에 대한 정보인 매니페스트와 실제 이미지를 구성하는 레이저 정보로 나뉘어진다. 이 두 가 지는
 고유 ID가 부여된 다이제스트(digest)라는 값을 가진다.
+```shell
+curl -i --header "Accept: application/vnd.docker.distribution.mannifest.v2+json" \
+https://localhost:7000/v2/python/manifests/3.8
+```
+하기는 실제 명령어를 실행해서 얻은 Content Digest 값이다.
+```text
+[root@localhost private_registry]# curl -i --header "Accept: application/vnd.docker.distribution.mannifest.v2+json" \ http://localhost:7000/v2/python/manifests/3.8 | grep Content-Digest
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 15423  100 15423    0     0  1180k      0 --:--:-- --:--:-- --:--:-- 1255k
+Docker-Content-Digest: sha256:4baf80412d9c56db36f781483b537bf638a8c372eec082b600492c1987e55da8
+```
