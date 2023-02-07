@@ -40,7 +40,7 @@ Docker 이미지는 도커 이미지 자체에 대한 정보인 매니페스트�
 고유 ID가 부여된 다이제스트(digest)라는 값을 가진다.
 ```shell
 curl -i --header "Accept: application/vnd.docker.distribution.mannifest.v2+json" \
-https://localhost:7000/v2/python/manifests/3.8
+http://localhost:7000/v2/python/manifests/3.8
 ```
 하기는 실제 명령어를 실행해서 얻은 Content Digest 값이다.
 ```text
