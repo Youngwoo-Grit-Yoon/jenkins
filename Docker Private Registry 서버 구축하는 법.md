@@ -23,3 +23,13 @@ docker run -d \
 ```shell
 docker push localhost:7000/python:3.8
 ```
+하기 명령어를 실행하여 Registry에 있는 이미지 리스트를 조회할 수 있다.
+```text
+[root@localhost private_registry]# curl -X GET http://127.0.0.1:7000/v2/_catalog
+{"repositories":["python"]}
+```
+하기 명령어를 실행하여 이미지의 태그 리스트를 조회할 수 있다.
+```text
+[root@localhost private_registry]# curl -X GET http://127.0.0.1:7000/v2/python/tags/list
+{"name":"python","tags":["3.8"]}
+```
