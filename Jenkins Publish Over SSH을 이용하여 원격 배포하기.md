@@ -29,3 +29,9 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1dBzksB0Iv0HVvPfwa0FuwO8q6itmxAoaz0npDLh9
 ![](./img/ssh2.png)  
 호스트 아이피, 계정 이름, 포트 등 추가 정보는 추가를 눌러서 하기 이미지와 같이 설정한다.  
 ![](./img/ssh3.png)  
+우측 하단에 Test Configuration 버튼을 눌렀는데 하기와 같이 에러가 뜰 수 있다.  
+![](./img/ssh4.png)  
+이럴 경우 하기와 같은 옵션을 이용하여 공개키와 개인키를 다시 만들어야 한다.
+```shell
+ssh-keygen -t rsa -b 4096 -m PEM
+```
