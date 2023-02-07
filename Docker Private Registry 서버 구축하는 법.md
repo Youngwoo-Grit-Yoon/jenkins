@@ -12,7 +12,7 @@ docker run -d \
 하기 내용 복사해서 바로 실행이 가능하다.
 ```shell
 docker run -d \
-  -p 5000:5000 \
+  -p 7000:5000 \
   --restart=always \
   --name private-registry \
   -v /root/jenkins/private_registry:/var/lib/registry \
