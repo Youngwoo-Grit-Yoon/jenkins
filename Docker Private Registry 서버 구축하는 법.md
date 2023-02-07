@@ -33,3 +33,4 @@ docker push localhost:7000/python:3.8
 [root@localhost private_registry]# curl -X GET http://127.0.0.1:7000/v2/python/tags/list
 {"name":"python","tags":["3.8"]}
 ```
+### Docker Registry v2 서버에서 Image 지우는 법
