@@ -15,3 +15,12 @@ total 12K
 이제 Jenkins 서버가 아닌 원격 서버에 Jenkins에서 SSH 연결을 수행할 계정으로 접속 후 공개키를 등록해야 한다.
 만약 계정 이름이 'youngwoo'라면 /home/youngwoo/.ssh 디렉토리에 있는 authorized_keys 파일에 위에서 생성한
 공개키를 등록한다. 만약 해당 파일이 존재하지 않으면 직접 생성하여 공개키 내용을 복사해서 붙여넣는다.
+```text
+jenkins@0cb78e604852:~/.ssh$ ls -ltih
+total 12K
+104850052 -rw-r--r-- 1 jenkins jenkins  574 Feb  6 07:37 id_rsa.pub
+104850050 -rw------- 1 jenkins jenkins 2.6K Feb  6 07:37 id_rsa
+104850051 -rw-r--r-- 1 jenkins jenkins  444 Feb  6 03:29 known_hosts
+jenkins@0cb78e604852:~/.ssh$ cat id_rsa.pub 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1dBzksB0Iv0HVvPfwa0FuwO8q6itmxAoaz0npDLh9/ASwr54vyl1IFvIYm+a8olEgbEBlaT3iFNsGERc7MIQHQo+qHhfa9UCnYGpNwA4UK1rbXEC04bRKZSzZ420tZE2JFdvh1gelldMNADOs/xCny3y6jA4cS1aqH1DIOu5TzWRF01oZA/Ob6HaQQl9xy664ko94B+BHK4qnJilt5tASA81kyygxHJl7U8a652CPGOBzzBIAA0bVVOH0PTNu+QBixYhUmtuqUOaohxuH3bd870Js0B1PWR6D0HB96V3l1Z811bSvTgL/JfJzIaLj4T7IleFZdr5hfzHziAMQ5xxo5XvuVr36SI6csFhNTmWmeuGC1qcm4s79k0iusRcKgTcuoRESDhAkqbcih8b6LD/zajDcKGL8YJ6eOGSKe7FaSToxK4Sk/VAIThNrExGahfYwpSKdDdChvMA4xOX/ti7MLoGPzgZxN5KPScMc9Jwtg/+Gx6dhPa/e5+QBpN/ehJc= jenkins@0cb78e604852
+```
