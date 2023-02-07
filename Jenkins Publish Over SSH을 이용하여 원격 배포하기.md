@@ -61,3 +61,5 @@ SSH: Transferred 0 file(s)
 Build step 'Send files or execute commands over SSH' changed build result to SUCCESS
 Finished: SUCCESS
 ```
+이전에 생성한 아이템을 클릭하고 좌측 구성을 클릭한다. 소스 코드 관리를 클릭하고 Git을 클릭한다. Repository URL에 Git ssh
+주소를 입력하고 Credentials는 이전에 생성한 것을 클릭한다.
