@@ -37,3 +37,5 @@ ssh-keygen -t rsa -b 4096 -m PEM
 ```
 다시 해보면 success 문구가 나타난다.  
 ![](./img/ssh5.png)  
+만약 Git 서버와 연동하기 위해서 개인키 및 공개키를 생성할 때 ssh-keygen 명령어만 사용했다면 상기 명령어를 통해서 다시
+생성한다.
