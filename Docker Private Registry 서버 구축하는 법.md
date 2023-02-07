@@ -42,7 +42,7 @@ Docker 이미지는 도커 이미지 자체에 대한 정보인 매니페스트�
 curl -i --header "Accept: application/vnd.docker.distribution.mannifest.v2+json" \
 http://localhost:7000/v2/python/manifests/3.8
 ```
-하기는 실제 명령어를 실행해서 얻은 Content Digest 값이다.
+하기는 실제 명령어를 실행해서 얻은 Content Digest 값(sha256:4baf80412d9c56db36f781483b537bf638a8c372eec082b600492c1987e55da8)이다.
 ```text
 [root@localhost private_registry]# curl -i --header "Accept: application/vnd.docker.distribution.mannifest.v2+json" \ http://localhost:7000/v2/python/manifests/3.8 | grep Content-Digest
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
