@@ -50,3 +50,28 @@ https://localhost:7000/v2/python/manifests/3.8
 100 15423  100 15423    0     0  1180k      0 --:--:-- --:--:-- --:--:-- 1255k
 Docker-Content-Digest: sha256:4baf80412d9c56db36f781483b537bf638a8c372eec082b600492c1987e55da8
 ```
+얻은 Digest 값을 하기 명령어와 조합하여 이미지를 제거한다.
+```shell
+curl -X DELETE -v http://localhost:7000/v2/python/manifests/sha256:4baf80412d9c56db36f781483b537bf638a8c372eec082b600492c1987e55da8
+```
+아래는 실제 실행에 대한 결과이다.
+```text
+[root@localhost private_registry]# curl -X DELETE -v http://localhost:7000/v2/python/manifests/sha256:4baf80412d9c56db36f781483b537bf638a8c372eec082b600492c1987e55da8
+* About to connect() to localhost port 7000 (#0)
+*   Trying ::1...
+* Connected to localhost (::1) port 7000 (#0)
+> DELETE /v2/python/manifests/sha256:4baf80412d9c56db36f781483b537bf638a8c372eec082b600492c1987e55da8 HTTP/1.1
+> User-Agent: curl/7.29.0
+> Host: localhost:7000
+> Accept: */*
+> 
+< HTTP/1.1 404 Not Found
+< Content-Type: application/json; charset=utf-8
+< Docker-Distribution-Api-Version: registry/2.0
+< X-Content-Type-Options: nosniff
+< Date: Tue, 07 Feb 2023 05:50:44 GMT
+< Content-Length: 70
+< 
+{"errors":[{"code":"MANIFEST_UNKNOWN","message":"manifest unknown"}]}
+* Connection #0 to host localhost left intact
+```
