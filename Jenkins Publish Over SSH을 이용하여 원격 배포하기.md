@@ -47,3 +47,17 @@ Build Steps에서 `Send files or execute commands over SSH`를 클릭하고 하�
 [root@localhost ~]# cat ~/helloworld.txt 
 Hello world!
 ```
+하기는 콘솔 출력이다. 실제로 파일이 생성됐는지는 알 수 없다.
+```text
+콘솔 출력
+Started by user Youngwoo Yoon
+Running as SYSTEM
+Building in workspace /var/jenkins_home/workspace/test-ssh
+SSH: Connecting from host [0cb78e604852]
+SSH: Connecting with configuration [Docker Deployment Target Server] ...
+SSH: EXEC: completed after 202 ms
+SSH: Disconnecting configuration [Docker Deployment Target Server] ...
+SSH: Transferred 0 file(s)
+Build step 'Send files or execute commands over SSH' changed build result to SUCCESS
+Finished: SUCCESS
+```
