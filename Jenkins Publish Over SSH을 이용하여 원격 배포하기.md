@@ -38,4 +38,12 @@ ssh-keygen -t rsa -b 4096 -m PEM
 다시 해보면 success 문구가 나타난다.  
 ![](./img/ssh5.png)  
 만약 Git 서버와 연동하기 위해서 개인키 및 공개키를 생성할 때 ssh-keygen 명령어만 사용했다면 상기 명령어를 통해서 다시
-생성한다.
+생성한다.  
+이제 테스트를 위해서 Item을 생성한다. 아이템을 생성할 때 이름을 입력하고 Freestyle project를 클릭한다. 이후 OK를 클릭한다.  
+Build Steps에서 `Send files or execute commands over SSH`를 클릭하고 하기 이미지와 같이 내용을 입력한다.  
+![](./img/ssh6.png)  
+저장한 다음에 지금 빌드를 클릭하고 원격 서버로 접속하여 홈 디렉토리에 helloworld.txt 파일이 생성됐는지 확인한다.
+```text
+[root@localhost ~]# cat ~/helloworld.txt 
+Hello world!
+```
