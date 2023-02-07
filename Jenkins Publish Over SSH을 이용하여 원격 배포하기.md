@@ -27,3 +27,5 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1dBzksB0Iv0HVvPfwa0FuwO8q6itmxAoaz0npDLh9
 이제 다시 Jenkins 메인 화면으로 돌아와서 Jenkins 관리 -> 시스템 설정을 클릭한다. 하단의 'Publish Over SSH'
 항목에서 개인키 내용을 Key에 복사해서 넣는다.  
 ![](./img/ssh2.png)  
+호스트 아이피, 계정 이름, 포트 등 추가 정보는 추가를 눌러서 하기 이미지와 같이 설정한다.  
+![](./img/ssh3.png)  
