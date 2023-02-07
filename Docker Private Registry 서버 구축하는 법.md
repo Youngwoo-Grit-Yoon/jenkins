@@ -18,3 +18,8 @@ docker run -d \
   -v /root/jenkins/private_registry:/var/lib/registry \
   registry:2
 ```
+생성한 Private Registry 서버에 python:3.8 이미지를 Push 할 수 있다. 이미지 이름은 하기와 같이 Registry 정보를 포함해야
+한다.
+```shell
+docker push localhost:7000/python:3.8
+```
