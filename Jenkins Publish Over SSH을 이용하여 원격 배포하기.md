@@ -24,4 +24,6 @@ total 12K
 jenkins@0cb78e604852:~/.ssh$ cat id_rsa.pub 
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1dBzksB0Iv0HVvPfwa0FuwO8q6itmxAoaz0npDLh9/ASwr54vyl1IFvIYm+a8olEgbEBlaT3iFNsGERc7MIQHQo+qHhfa9UCnYGpNwA4UK1rbXEC04bRKZSzZ420tZE2JFdvh1gelldMNADOs/xCny3y6jA4cS1aqH1DIOu5TzWRF01oZA/Ob6HaQQl9xy664ko94B+BHK4qnJilt5tASA81kyygxHJl7U8a652CPGOBzzBIAA0bVVOH0PTNu+QBixYhUmtuqUOaohxuH3bd870Js0B1PWR6D0HB96V3l1Z811bSvTgL/JfJzIaLj4T7IleFZdr5hfzHziAMQ5xxo5XvuVr36SI6csFhNTmWmeuGC1qcm4s79k0iusRcKgTcuoRESDhAkqbcih8b6LD/zajDcKGL8YJ6eOGSKe7FaSToxK4Sk/VAIThNrExGahfYwpSKdDdChvMA4xOX/ti7MLoGPzgZxN5KPScMc9Jwtg/+Gx6dhPa/e5+QBpN/ehJc= jenkins@0cb78e604852
 ```
-이제 다시 Jenkins 메인 화면으로 돌아와서 Jenkins 관리 -> 시스템 설정을 클릭한다.
+이제 다시 Jenkins 메인 화면으로 돌아와서 Jenkins 관리 -> 시스템 설정을 클릭한다. 하단의 'Publish Over SSH'
+항목에서 개인키 내용을 Key에 복사해서 넣는다.  
+![](./img/ssh2.png)  
