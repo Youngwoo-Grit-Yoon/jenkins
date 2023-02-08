@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = "testjenkins"
+        IMAGE_VERSION = "0.1-dev"
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+                sh 'docker rmi ${IMAGE_NAME}:${IMAGE_VERSION}'
+                sh 'docker build --rm -t ${IMAGE_NAME}:${IMAGE_VERSION} .'
+                sh 'docker save -o /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar ${IMAGE_NAME}:${IMAGE_VERSION}'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
