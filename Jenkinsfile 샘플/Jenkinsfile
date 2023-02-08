@@ -9,8 +9,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                echo 'Let's Start Building!'
                 sh 'docker rmi ${IMAGE_NAME}:${IMAGE_VERSION}'
+                sh 'rm -rf /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
                 sh 'docker build --rm -t ${IMAGE_NAME}:${IMAGE_VERSION} .'
                 sh 'docker save -o /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar ${IMAGE_NAME}:${IMAGE_VERSION}'
             }
@@ -18,13 +19,13 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Testing..'
+                echo 'Let's Start Testing!'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                echo 'Let's Start Deploying!'
             }
         }
     }
