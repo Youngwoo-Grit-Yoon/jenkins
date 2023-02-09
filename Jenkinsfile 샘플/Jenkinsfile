@@ -5,14 +5,15 @@ pipeline {
         IMAGE_NAME = "testjenkins"
         IMAGE_VERSION = "0.1-dev"
 
-        TARGET_SERVER_01_HOST = "192.168.53.9"
-        TARGET_SERVER_01_PORT = "22"
-        TARGET_SERVER_01_ID = "jenkins"
-        TARGET_SERVER_01_SAVE_PATH = "~/"
+        REMOTE_SERVER_01_HOST = "192.168.53.9"
+        REMOTE_SERVER_01_PORT = "22"
+        REMOTE_SERVER_01_ID = "jenkins"
+        REMOTE_SERVER_01_SAVE_PATH = "~"
 
-        TARGET_SERVER_02_HOST = ""
-        TARGET_SERVER_02_PORT = ""
-        TARGET_SERVER_02_ID = ""
+        REMOTE_SERVER_02_HOST = "192.168.212.3"
+        REMOTE_SERVER_02_PORT = "22"
+        REMOTE_SERVER_02_ID = "jenkins"
+        REMOTE_SERVER_02_SAVE_PATH = "~"
     }
 
     stages {
@@ -33,7 +34,29 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy now starts!'
-                sh 'scp -P ${TARGET_SERVER_01_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar ${TARGET_SERVER_01_ID}@${TARGET_SERVER_01_HOST}:${TARGET_SERVER_01_SAVE_PATH}'
+                sh 'scp -P ${REMOTE_SERVER_01_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar ${REMOTE_SERVER_01_ID}@${REMOTE_SERVER_01_HOST}:${REMOTE_SERVER_01_SAVE_PATH}'
+                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} docker load -i ${REMOTE_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
+                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} rm ${REMOTE_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
+                sh '''
+                   ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} \
+                   docker run \
+                   --name testjenkins \
+                   -d \
+                   -p 12000:12000 \
+                   ${IMAGE_NAME}:${IMAGE_VERSION}
+                   '''
+
+                sh 'scp -P ${REMOTE_SERVER_02_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar ${REMOTE_SERVER_02_ID}@${REMOTE_SERVER_02_HOST}:${REMOTE_SERVER_02_SAVE_PATH}'
+                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} docker load -i ${REMOTE_SERVER_02_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
+                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} rm ${REMOTE_SERVER_02_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
+                sh '''
+                   ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} \
+                   docker run \
+                   --name testjenkins \
+                   -d \
+                   -p 12000:12000 \
+                   ${IMAGE_NAME}:${IMAGE_VERSION}
+                   '''
 
                 sh 'docker rmi ${IMAGE_NAME}:${IMAGE_VERSION}'
                 sh 'rm -rf /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
