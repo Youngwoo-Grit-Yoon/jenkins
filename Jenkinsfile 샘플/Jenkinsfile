@@ -4,14 +4,21 @@ pipeline {
     environment {
         IMAGE_NAME = "testjenkins"
         IMAGE_VERSION = "0.1-dev"
+
+        TARGET_SERVER_01_HOST = "192.168.53.9"
+        TARGET_SERVER_01_PORT = "22"
+        TARGET_SERVER_01_ID = "jenkins"
+        TARGET_SERVER_01_SAVE_PATH = "~/"
+
+        TARGET_SERVER_02_HOST = ""
+        TARGET_SERVER_02_PORT = ""
+        TARGET_SERVER_02_ID = ""
     }
 
     stages {
         stage('Build') {
             steps {
                 echo 'Build now starts!'
-                sh 'docker rmi ${IMAGE_NAME}:${IMAGE_VERSION}'
-                sh 'rm -rf /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
                 sh 'docker build --rm -t ${IMAGE_NAME}:${IMAGE_VERSION} .'
                 sh 'docker save -o /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar ${IMAGE_NAME}:${IMAGE_VERSION}'
             }
@@ -26,6 +33,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy now starts!'
+                sh 'scp -P ${TARGET_SERVER_01_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar ${TARGET_SERVER_01_ID}@${TARGET_SERVER_01_HOST}:${TARGET_SERVER_01_SAVE_PATH}'
+
+                sh 'docker rmi ${IMAGE_NAME}:${IMAGE_VERSION}'
+                sh 'rm -rf /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
             }
         }
     }
