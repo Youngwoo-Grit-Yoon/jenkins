@@ -42,3 +42,25 @@ backend api_servers
    server s1 192.168.1.27:8000
    server s2 192.168.1.28:8080
 ```
+Jenkins 리스닝 포트 정보를 확인한다.
+```text
+PORTS                                                                                      NAMES
+0.0.0.0:8080->8080/tcp, :::8080->8080/tcp, 0.0.0.0:50000->50000/tcp, :::50000->50000/tcp   jenkins-blueocean
+2375/tcp, 0.0.0.0:2376->2376/tcp, :::2376->2376/tcp                                        jenkins-docker
+0.0.0.0:6000->22/tcp, :::6000->22/tcp                                                      git-server
+```
+상기 내용을 통해서 `8080` 포트를 리스닝하고 있음을 알 수 있다. haproxy.cfg 파일을 하기와 같이 구성하여 생성한다.
+```text
+defaults
+   mode http
+   log global
+   balance roundrobin
+   timeout client 30s
+
+frontend jenkins_server
+   bind *:80
+   default_backend jenkins_server
+
+backend jenkins_server
+   server s1 192.168.53.9:8080
+```
