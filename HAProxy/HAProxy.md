@@ -18,3 +18,27 @@ frontend
 backend
  # servers that fulfill the requests
 ```
+HAProxy 공식 홈페이지에서 제공하는 Defaults 구성 내용은 하기와 같다.
+```text
+defaults
+   mode http
+   log global
+   balance roundrobin
+   timeout client 30s
+
+frontend public_web_servers
+   bind *:80
+   default_backend public_web_servers
+
+frontend api_servers
+   bind *:8000
+   default_backend api_servers
+
+backend public_web_servers
+   server s1 192.168.1.25:80
+   server s2 192.168.1.26:80
+
+backend api_servers
+   server s1 192.168.1.27:8000
+   server s2 192.168.1.28:8080
+```
