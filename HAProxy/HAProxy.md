@@ -59,7 +59,7 @@ defaults
    timeout client 30s
 
 frontend jenkins_server
-   bind *:80
+   bind *:9090 --> 1번부터 1023까지의 Privileged Port는 피한다.
    default_backend jenkins_server
 
 backend jenkins_server
@@ -108,6 +108,6 @@ Configuration file is valid
 docker run -d \
 --name my-running-haproxy \
 --sysctl net.ipv4.ip_unprivileged_port_start=0 \
--p 80:80 \
+-p 9090:9090 \
 my-haproxy
 ```
