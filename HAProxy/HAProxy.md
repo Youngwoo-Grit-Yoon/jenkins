@@ -107,6 +107,7 @@ Configuration file is valid
 ```shell
 docker run -d \
 --name my-running-haproxy \
+--sysctl net.ipv4.ip_unprivileged_port_start=0 \
 -p 80:80 \
- my-haproxy
+my-haproxy
 ```
