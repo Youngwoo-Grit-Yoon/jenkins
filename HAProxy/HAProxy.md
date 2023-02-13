@@ -1,7 +1,7 @@
 # Install HAProxy using Docker
 ## Description
 HAProxy는 무료이며 고가용성의 오픈 소스 로드 밸런싱 애플리케이션이다. TCP와 HTTP 기반 요청을 다수의 서버 사이에서 프록시 한다.
-## How to write a haproxy.cfg
+## How to write a haproxy.cfg and start HAProxy Server
 ### Overview
 https://www.haproxy.com/documentation/hapee/latest/configuration/config-sections/overview/  
 HAProxy 설정 파일인 haproxy.cfg 파일은 하기와 같은 구조를 갖는다.
@@ -111,3 +111,6 @@ docker run -d \
 -p 9090:9090 \
 my-haproxy
 ```
+`9090` 포트를 이용하여 URL에 접속한다.  
+![](../img/haproxy9090.png)  
+### Configure HTTPS(SSL/TLS)
