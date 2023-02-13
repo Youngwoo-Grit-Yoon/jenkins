@@ -114,3 +114,4 @@ my-haproxy
 `9090` 포트를 이용하여 URL에 접속한다.  
 ![](../img/haproxy9090.png)  
 ### Configure HTTPS(SSL/TLS)
+https://www.haproxy.com/blog/haproxy-ssl-termination/
