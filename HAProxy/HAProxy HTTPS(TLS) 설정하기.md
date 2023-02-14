@@ -12,7 +12,7 @@ SSL Termination은 한 마디로 구간 암호화다. 클라이언트와 로드 
 ```text
 frontend jenkins_server
     bind *:9090
-    bind *:9443 ssl crt /etc/ssl/certs/server.pem
+    bind *:9443 ssl crt /var/lib/haproxy/server.pem
     default_backend jenkins_server
 ```
 - ssl : 해당 리스너에 대해서 SSL Termination을 활성화 시킨다.
