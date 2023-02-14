@@ -10,17 +10,15 @@ SSL Termination은 한 마디로 구간 암호화다. 클라이언트와 로드 
 비암호화 구간이다.
 ## Enabling SSL with HAProxy
 ```text
-frontend jenkins_server
-    bind *:9090
-    bind *:9443 ssl crt /var/lib/haproxy/server.pem
-    default_backend jenkins_server
+defaults
+   mode http
+   log global
+   balance roundrobin
+   timeout client 30s
+
+listen haproxy
+   bind 0.0.0.0:9443 ssl crt /var/lib/haproxy/server.pem
+   server s1 192.168.53.9:8080
 ```
 - ssl : 해당 리스너에 대해서 SSL Termination을 활성화 시킨다.
 - crt : PEM 형식의 SSL 인증서 위치를 식별한다. 이때 해당 PEM 인증서는 Public Certificate 및 Private Key 데이터를 모두 포함하고 있어야 한다.
-
-HAProxy가 서버와 연결을 수립하려고 할 때 서버의 SSL 인증서가 신뢰할 수 있는 것인지 검증할 것이다. 만약 서버가 사설 인증 기관에
-의해서 서명된 인증서를 사용하고 있다면 서버 라인의 마지막에 `verify none`을 추가하여 검증을 무시할 수 있다.
-```text
-backend jenkins_server
-   server s1 192.168.53.9:8080 verify none
-```
