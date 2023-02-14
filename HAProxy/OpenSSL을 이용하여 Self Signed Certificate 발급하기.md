@@ -98,3 +98,7 @@ total 16K
 7519643 -rw-r--r-- 1 root root 1.2K Feb 14 10:20 RootCA.conf
 7519638 -rw-r--r-- 1 root root 1.8K Feb 14 10:10 RootCA.key
 ```
+정상적으로 RootCA 인증서가 생성되었는지 다음 명령어를 실행하여 확인할 수 있다.
+```shell
+openssl x509 -text -in RootCA.crt
+```
