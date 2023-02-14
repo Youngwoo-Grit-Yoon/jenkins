@@ -124,3 +124,27 @@ Getting CA Private Key
 Enter pass phrase for RootCA.key:
 [root@localhost openssl]#
 ```
+서비 개인키 파일로부터 Pass Phrase를 제거하여 서버에서 원활하게 사용할 수 있도록 한다.
+```shell
+openssl rsa -in server.key -out server.key
+```
+하기는 실제 명령어를 실행했을 때 결과이다.
+```text
+[root@localhost openssl]# openssl rsa -in server.key -out server.key
+Enter pass phrase for server.key:
+writing RSA key
+[root@localhost openssl]#
+```
+### Conclusion
+```text
+[root@localhost openssl]# ls -lih
+total 32K
+7519643 -rw-r--r-- 1 root root 1.2K Feb 14 10:20 RootCA.conf
+7519634 -rw-r--r-- 1 root root 1.3K Feb 14 10:39 RootCA.crt --> RootCA 인증서
+7519641 -rw-r--r-- 1 root root 1.1K Feb 14 10:28 RootCA.csr
+7519638 -rw-r--r-- 1 root root 1.8K Feb 14 10:10 RootCA.key --> RootCA 개인키
+7519647 -rw-r--r-- 1 root root   17 Feb 14 11:06 RootCA.srl
+7519646 -rw-r--r-- 1 root root 1.2K Feb 14 11:06 server.crt --> 서버 인증서(공개키를 포함)
+7519645 -rw-r--r-- 1 root root 1013 Feb 14 10:59 server.csr
+7519644 -rw-r--r-- 1 root root 1.7K Feb 14 11:09 server.key --> 서버 개인키(비밀번호 제거)
+```
