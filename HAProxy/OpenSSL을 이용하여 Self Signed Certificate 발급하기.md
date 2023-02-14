@@ -148,10 +148,51 @@ total 32K
 7519645 -rw-r--r-- 1 root root 1013 Feb 14 10:59 server.csr
 7519644 -rw-r--r-- 1 root root 1.7K Feb 14 11:09 server.key --> 서버 개인키(비밀번호 제거)
 ```
-### *.key, *.crt 파일을 *.pem 파일로 변환하기
+### *.key, *.crt 파일을 *.pem 파일로 각각 변환하기
 ```shell
 openssl rsa -in server.key -text > server.key.pem
 ```
 ```shell
 openssl x509 -inform PEM -in server.crt > server.crt.pem
+```
+### *.key, *.crt 파일을 하나의 *.pem 파일로 합치기
+먼저 server.pem 파일을 하나 생성한다.
+```shell
+touch server.pem
+```
+server.key 파일과 server.crt 파일을 순서대로 열어서 내용 복사 후 server.pem 파일에 붙여넣는 방식으로 추가한다.
+```text
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpgIBAAKCAQEAx3/QOJKdheXB8VfCzVtrniOIbjCHCeTZAj7XJv4W6wcfyQ/E
+3+8GBQXLR2YwmMmelLvdgAcGxMKZX9T+vLRZa27EQyayotn9egEAL1mtQtvpcpSS
+2hbYqhIOi1vuIzzofTYRe5lrm6s8noKyHy9fv2UcwvqYC3fnZO/WGWjaAFEkaPML
+crd3l7Ya6ur4UV7zpF3//bdWOMqXIn1PZQ0CmuqaMwVNTENj7U8TNVn1RZx6UzIN
+sZMes7hX6VYdtdn/qDVTDVWXGCMglb8DnALPsDhVTjuUcIP/VyekQiR766Vbvqyi
+tq9np6reYGOM6hhM2B+GnlDpHz0SVchJ+S4kEQIDAQABAoIBAQCur+J5xxgb6OV8
+GObAvu5rGJ4cLm3wYe0LpE7tG8yhnCle+2ne1AOnXj1zla2z+8faYO5BbuWkYOnA
+... 내용 생략 ...
+RYkDholU0fAi+WYx0zmInlrOmPugCvbT3NitwOB9HggnqXI16BNIn0blFKLEfzhU
+jlnj/6354niPwgcPssIPvJexAoGBALQ//Foy3zR972zR5/DvNeyCVfKNQ6fwIej2
+xfEv/1rlzKIaJpu3puP34dq+EDAR+P8tApOnUcHGsOxmSyVVLzhCrKbgdWyz4arx
+L4V9deYzeq2evOvnwNevVCAqrc6c3NhaF8YWiGJ8XoJ0+UzZ2knnyTchENs8xTeF
+EXIJBYf1AoGBAMPssvV9hWcr8NV3WzXpPKBdnpGfVqRm3zI0oanxh5aZTaRQ5gIj
+3HKeR6Kg+aVKmqRE/di8hc9de8Ab8mcyjUoTPUXG+XClDFtD5MMiUgfOR1aXVM+3
+ro5onEOprJV8bvJMAhEd5Iowlkp6tECLENWXPZjF7pQzTH0tS++TjGhU
+-----END RSA PRIVATE KEY-----
+-----BEGIN CERTIFICATE-----
+MIIDPzCCAicCCQCQUVyDPtkDVjANBgkqhkiG9w0BAQsFADBVMQswCQYDVQQGEwJL
+UjEYMBYGA1UECgwPSGFuc29sIEludGljdWJlMRUwEwYDVQQLDAxQbGF0Zm9ybURl
+djIxFTATBgNVBAMMDEplbmtpbnMgSG9zdDAeFw0yMzAyMTQwMjE3NTRaFw0zMzAy
+MTEwMjE3NTRaMG4xCzAJBgNVBAYTAktSMRUwEwYDVQQHDAxEZWZhdWx0IENpdHkx
+GDAWBgNVBAoMD0hhbnNvbCBJbnRpY3ViZTEVMBMGA1UECwwMUGxhdGZvcm1EZXYy
+... 내용 생략 ...
+HrO4V+lWHbXZ/6g1Uw1VlxgjIJW/A5wCz7A4VU47lHCD/1cnpEIke+ulW76sorav
+Z6eq3mBjjOoYTNgfhp5Q6R89ElXISfkuJBECAwEAATANBgkqhkiG9w0BAQsFAAOC
+AQEAMNS5Isi7wg1HKh14MU0kF9+4WnnBaiL7hP3QNaCB+d5Fz4m5izbCX3cioKAG
+xZz+Uni0ZR7vFzqiNlUZEmOikj/CYazTmu7qQYoOYozsdssHOqgCfgZfyFsHNTla
+BvuVMwkLegMsn36lO40OzbPY/LEHonbt1Ba156u/RJDxoi+LQ42L/FMNrKeW0fcH
+xXOcihqerU3TmA+JD/yKbQwCoi5hcQlgMjPWsD8udbBOgF3ovbx8oDQGu2V5an42
+nPYNdR6qSr7sAa4crIpD8yrHHFE5ip/ZTss0nR2pgq358uqQyetY0sj2p5XJaUWx
+n33G4Z9NiEbBra/g+0gFRoxbEQ==
+-----END CERTIFICATE-----
 ```
