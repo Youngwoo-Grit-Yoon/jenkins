@@ -102,3 +102,4 @@ total 16K
 ```shell
 openssl x509 -text -in RootCA.crt
 ```
+### Root CA로부터 인증받은 서버 인증서 생성
