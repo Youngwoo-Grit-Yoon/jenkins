@@ -117,7 +117,7 @@ openssl x509 -req -days 3650 -in server.csr -CA RootCA.crt -CAkey RootCA.key -CA
 ```
 하기는 실제 명령어를 실행했을 때 결과이다.
 ```text
-[root@localhost openssl]# openssl x509 -req -in server.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -out server.crt
+[root@localhost openssl]# openssl x509 -req -days 3650 -in server.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -out server.crt
 Signature ok
 subject=/C=KR/L=Default City/O=Hansol Inticube/OU=PlatformDev2/CN=Jenkins Server
 Getting CA Private Key
