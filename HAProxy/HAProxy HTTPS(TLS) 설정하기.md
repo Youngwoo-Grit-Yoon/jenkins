@@ -11,7 +11,9 @@ SSL Termination은 한 마디로 구간 암호화다. 클라이언트와 로드 
 ## Enabling SSL with HAProxy
 ```text
 frontend jenkins_server
-    bind *:80
-    bind *:443 ssl crt /etc/ssl/certs/mysite.pem
+    bind *:9090
+    bind *:9443 ssl crt /etc/ssl/certs/server.pem
     default_backend jenkins_server
 ```
+- ssl : 해당 리스너에 대해서 SSL Termination을 활성화 시킨다.
+- crt : PEM 형식의 SSL 인증서 위치를 식별한다. 이때 해당 PEM 인증서는 Public Certificate 및 Private Key 데이터를 모두 포함하고 있어야 한다.
