@@ -9,3 +9,39 @@
 ```shell
 openssl genrsa -aes256 -out RootCA.key 2048
 ```
+CSR 파일을 생성하기 위해서 RootCA.conf 파일을 하기 예시와 같이 생성한다.
+```text
+[req]
+default_bits             = 2048
+default_md               = sha1
+default_keyfile          = RootCA.key
+distinguished_name       = req_distinguished_name
+extensions               = ca
+req_extensions           = ca
+ 
+[ca]
+basicConstraints         = critical, CA:TRUE, pathlen:0
+subjectKeyIdentifier     = hash
+#authorityKeyIdentifier  = keyid:always, issuer:always
+keyUsage                 = keyCertSign, cRLSign
+nsCertType               = sslCA, emailCA, objCA
+
+[req_distinguished_name]
+countryName                      = Country Name (2 letter code)
+countryName_default              = KR
+countryName_min                  = 2
+countryName_max                  = 2
+
+# 회사명 입력
+organizationName                 = Organization Name (eg, company)
+organizationName_default         = Hansol Inticube
+ 
+# 부서 입력
+organizationalUnitName           = Organizational Unit Name (eg, section)
+organizationalUnitName_default   = PlatformDev2
+ 
+# SSL 서비스할 domain 명 입력
+commonName                       = Common Name (eg, your name or your server's hostname)
+commonName_default               = Jenkins Host
+commonName_max                   = 64 
+```
