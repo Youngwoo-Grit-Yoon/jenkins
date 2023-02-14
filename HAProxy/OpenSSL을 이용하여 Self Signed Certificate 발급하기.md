@@ -3,7 +3,7 @@
 서버 인증서를 확인하고 그 인증서 안에 있는 공개키를 이용하여 암호화된 통신을 수행할 수 있다.
 ### Root CA 인증서 생성
 지금부터 OpenSSL을 이용하여 Root CA의 개인키와 인증서를 만드는 방법을 설명한다.
-#### RSA 키 생성
+
 하기 명령어를 실행하여 AES256으로 암호화된 RootCA 개인키 파일을 생성한다. 생성될 개인키의 길이는 2048 비트이다. 이때 개인키를 암호화할
 암호를 입력하게 되는데 꼭 기억해야 한다.
 ```shell
@@ -44,4 +44,16 @@ organizationalUnitName_default   = PlatformDev2
 commonName                       = Common Name (eg, your name or your server's hostname)
 commonName_default               = Jenkins Host
 commonName_max                   = 64 
+```
+위에서 생성한 RootCA.key 및 RootCA.conf 파일을 이용하여 CSR 파일을 생성한다.
+```shell
+openssl req -new -key RootCA.key -out RootCA.csr -config RootCA.conf
+```
+지금까지 생성된 파일들은 하기와 같다.
+```text
+[root@localhost openssl]# ls -ltih
+total 12K
+7519641 -rw-r--r-- 1 root root 1.1K Feb 14 10:28 RootCA.csr
+7519643 -rw-r--r-- 1 root root 1.2K Feb 14 10:20 RootCA.conf
+7519638 -rw-r--r-- 1 root root 1.8K Feb 14 10:10 RootCA.key
 ```
