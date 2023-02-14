@@ -8,3 +8,10 @@ SSL Termination 기능을 사용하면 다음과 같은 이점이 있다.
 
 SSL Termination은 한 마디로 구간 암호화다. 클라이언트와 로드 밸런서 사이가 트래픽 암호화 구간이고 로드 밸런서와 서버 사이는 트래픽
 비암호화 구간이다.
+## Enabling SSL with HAProxy
+```text
+frontend jenkins_server
+    bind *:80
+    bind *:443 ssl crt /etc/ssl/certs/mysite.pem
+    default_backend jenkins_server
+```
