@@ -93,10 +93,10 @@ Enter pass phrase for RootCA.key: --> 맨 처음에 생성한 인증서 암호�
 ```text
 [root@localhost openssl]# ls -ltih
 total 16K
-7519634 -rw-r--r-- 1 root root 1.3K Feb 14 10:39 RootCA.crt
+7519634 -rw-r--r-- 1 root root 1.3K Feb 14 10:39 RootCA.crt --> RootCA 공개키
 7519641 -rw-r--r-- 1 root root 1.1K Feb 14 10:28 RootCA.csr
 7519643 -rw-r--r-- 1 root root 1.2K Feb 14 10:20 RootCA.conf
-7519638 -rw-r--r-- 1 root root 1.8K Feb 14 10:10 RootCA.key
+7519638 -rw-r--r-- 1 root root 1.8K Feb 14 10:10 RootCA.key --> RootCA 개인키
 ```
 정상적으로 RootCA 인증서가 생성되었는지 다음 명령어를 실행하여 확인할 수 있다.
 ```shell
