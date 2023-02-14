@@ -103,3 +103,24 @@ total 16K
 openssl x509 -text -in RootCA.crt
 ```
 ### Root CA로부터 인증받은 서버 인증서 생성
+서버 개인키를 생성한다.
+```shell
+openssl genrsa -aes256 -out server.key 2048
+```
+서버 CSR 파일을 생성한다.
+```shell
+openssl req -new -key server.key -out server.csr
+```
+이제부터가 중요하다. Root CA와 관련된 인증서를 만들었으니 Root CA로부터 인증받은 서버의 인증서를 생성해야 한다.
+```shell
+openssl x509 -req -in server.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -out server.crt
+```
+하기는 실제 명령어를 실행했을 때 결과이다.
+```text
+[root@localhost openssl]# openssl x509 -req -in server.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -out server.crt
+Signature ok
+subject=/C=KR/L=Default City/O=Hansol Inticube/OU=PlatformDev2/CN=Jenkins Server
+Getting CA Private Key
+Enter pass phrase for RootCA.key:
+[root@localhost openssl]#
+```
