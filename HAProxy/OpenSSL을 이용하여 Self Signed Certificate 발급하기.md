@@ -113,7 +113,7 @@ openssl req -new -key server.key -out server.csr
 ```
 이제부터가 중요하다. Root CA와 관련된 인증서를 만들었으니 Root CA로부터 인증받은 서버의 인증서를 생성해야 한다.
 ```shell
-openssl x509 -req -in server.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -out server.crt
+openssl x509 -req -days 3650 -in server.csr -CA RootCA.crt -CAkey RootCA.key -CAcreateserial -out server.crt
 ```
 하기는 실제 명령어를 실행했을 때 결과이다.
 ```text
