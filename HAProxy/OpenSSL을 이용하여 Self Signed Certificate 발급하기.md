@@ -148,3 +148,10 @@ total 32K
 7519645 -rw-r--r-- 1 root root 1013 Feb 14 10:59 server.csr
 7519644 -rw-r--r-- 1 root root 1.7K Feb 14 11:09 server.key --> 서버 개인키(비밀번호 제거)
 ```
+### *.key, *.crt 파일을 *.pem 파일로 변환하기
+```shell
+openssl rsa -in server.key -text > server.key.pem
+```
+```shell
+openssl x509 -inform PEM -in server.crt > server.crt.pem
+```
