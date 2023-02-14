@@ -57,3 +57,44 @@ total 12K
 7519643 -rw-r--r-- 1 root root 1.2K Feb 14 10:20 RootCA.conf
 7519638 -rw-r--r-- 1 root root 1.8K Feb 14 10:10 RootCA.key
 ```
+이제 10년짜리 Self Signed 인증서를 생성한다. 서명에 사용할 해시 알고리즘을 변경하려면 -sha256, -sha384, 
+```shell
+openssl x509 -req \
+-days 3650 \
+-extensions ca \
+-set_serial 1 \
+-in RootCA.csr \
+-signkey RootCA.key \
+-out RootCA.crt \
+-extfile RootCA.conf
+```
+하기는 실제로 명령어를 실행했을 때 결과이다.
+```text
+[root@localhost openssl]# ls -lthi
+total 12K
+7519641 -rw-r--r-- 1 root root 1.1K Feb 14 10:28 RootCA.csr
+7519643 -rw-r--r-- 1 root root 1.2K Feb 14 10:20 RootCA.conf
+7519638 -rw-r--r-- 1 root root 1.8K Feb 14 10:10 RootCA.key
+[root@localhost openssl]# openssl x509 -req \
+> -days 3650 \
+> -extensions ca \
+> -set_serial 1 \
+> -in RootCA.csr \
+> -signkey RootCA.key \
+> -out RootCA.crt \
+> -extfile RootCA.conf
+Signature ok
+subject=/C=KR/O=Hansol Inticube/OU=PlatformDev2/CN=Jenkins Host
+Getting Private key
+Enter pass phrase for RootCA.key: --> 맨 처음에 생성한 인증서 암호키 입력
+[root@localhost openssl]#
+```
+지금까지 생성된 파일은 하기와 같다.
+```text
+[root@localhost openssl]# ls -ltih
+total 16K
+7519634 -rw-r--r-- 1 root root 1.3K Feb 14 10:39 RootCA.crt
+7519641 -rw-r--r-- 1 root root 1.1K Feb 14 10:28 RootCA.csr
+7519643 -rw-r--r-- 1 root root 1.2K Feb 14 10:20 RootCA.conf
+7519638 -rw-r--r-- 1 root root 1.8K Feb 14 10:10 RootCA.key
+```
