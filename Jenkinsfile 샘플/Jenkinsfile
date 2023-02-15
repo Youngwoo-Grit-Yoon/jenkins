@@ -3,7 +3,9 @@ pipeline {
 
     environment {
         IMAGE_NAME = "testjenkins"
-        IMAGE_VERSION = "0.1-dev"
+        IMAGE_AS_IS_VERSION = "0.11-dev"
+        IMAGE_TO_BE_VERSION = "0.12-dev"
+        CONTAINER_NAME = "testjenkins"
 
         REMOTE_SERVER_01_HOST = "192.168.53.9"
         REMOTE_SERVER_01_PORT = "22"
@@ -19,47 +21,88 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Build now starts!'
-                sh 'docker build --rm -t ${IMAGE_NAME}:${IMAGE_VERSION} .'
-                sh 'docker save -o /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar ${IMAGE_NAME}:${IMAGE_VERSION}'
+                echo '''
+                    ██████╗ ██╗   ██╗██╗██╗     ██████╗     ███╗   ██╗ ██████╗ ██╗    ██╗    ███████╗████████╗ █████╗ ██████╗ ████████╗███████╗
+                    ██╔══██╗██║   ██║██║██║     ██╔══██╗    ████╗  ██║██╔═══██╗██║    ██║    ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝██╔════╝
+                    ██████╔╝██║   ██║██║██║     ██║  ██║    ██╔██╗ ██║██║   ██║██║ █╗ ██║    ███████╗   ██║   ███████║██████╔╝   ██║   ███████╗
+                    ██╔══██╗██║   ██║██║██║     ██║  ██║    ██║╚██╗██║██║   ██║██║███╗██║    ╚════██║   ██║   ██╔══██║██╔══██╗   ██║   ╚════██║
+                    ██████╔╝╚██████╔╝██║███████╗██████╔╝    ██║ ╚████║╚██████╔╝╚███╔███╔╝    ███████║   ██║   ██║  ██║██║  ██║   ██║   ███████║
+                    ╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═════╝     ╚═╝  ╚═══╝ ╚═════╝  ╚══╝╚══╝     ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝                                                                                   
+                     '''
+
+                /*
+                 * TO-BE 이미지 및 파일 생성
+                 */
+                sh 'docker build --rm -t ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION} .'
+                sh 'docker save -o /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION}'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Test now starts!'
+                echo '''
+                    ████████╗███████╗███████╗████████╗    ███╗   ██╗ ██████╗ ██╗    ██╗    ███████╗████████╗ █████╗ ██████╗ ████████╗███████╗
+                    ╚══██╔══╝██╔════╝██╔════╝╚══██╔══╝    ████╗  ██║██╔═══██╗██║    ██║    ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝██╔════╝
+                       ██║   █████╗  ███████╗   ██║       ██╔██╗ ██║██║   ██║██║ █╗ ██║    ███████╗   ██║   ███████║██████╔╝   ██║   ███████╗
+                       ██║   ██╔══╝  ╚════██║   ██║       ██║╚██╗██║██║   ██║██║███╗██║    ╚════██║   ██║   ██╔══██║██╔══██╗   ██║   ╚════██║
+                       ██║   ███████╗███████║   ██║       ██║ ╚████║╚██████╔╝╚███╔███╔╝    ███████║   ██║   ██║  ██║██║  ██║   ██║   ███████║
+                       ╚═╝   ╚══════╝╚══════╝   ╚═╝       ╚═╝  ╚═══╝ ╚═════╝  ╚══╝╚══╝     ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
+                     '''
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploy now starts!'
-                sh 'scp -P ${REMOTE_SERVER_01_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar ${REMOTE_SERVER_01_ID}@${REMOTE_SERVER_01_HOST}:${REMOTE_SERVER_01_SAVE_PATH}'
-                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} docker load -i ${REMOTE_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
-                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} rm ${REMOTE_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
+                echo '''
+                    ██████╗ ███████╗██████╗ ██╗      ██████╗ ██╗   ██╗    ███╗   ██╗ ██████╗ ██╗    ██╗    ███████╗████████╗ █████╗ ██████╗ ████████╗███████╗
+                    ██╔══██╗██╔════╝██╔══██╗██║     ██╔═══██╗╚██╗ ██╔╝    ████╗  ██║██╔═══██╗██║    ██║    ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝██╔════╝
+                    ██║  ██║█████╗  ██████╔╝██║     ██║   ██║ ╚████╔╝     ██╔██╗ ██║██║   ██║██║ █╗ ██║    ███████╗   ██║   ███████║██████╔╝   ██║   ███████╗
+                    ██║  ██║██╔══╝  ██╔═══╝ ██║     ██║   ██║  ╚██╔╝      ██║╚██╗██║██║   ██║██║███╗██║    ╚════██║   ██║   ██╔══██║██╔══██╗   ██║   ╚════██║
+                    ██████╔╝███████╗██║     ███████╗╚██████╔╝   ██║       ██║ ╚████║╚██████╔╝╚███╔███╔╝    ███████║   ██║   ██║  ██║██║  ██║   ██║   ███████║
+                    ╚═════╝ ╚══════╝╚═╝     ╚══════╝ ╚═════╝    ╚═╝       ╚═╝  ╚═══╝ ╚═════╝  ╚══╝╚══╝     ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝                                                                                                                  
+                     '''
+
+                /*
+                 * 서버 #1 원격 배포 진행
+                 */
+                sh 'scp -P ${REMOTE_SERVER_01_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar ${REMOTE_SERVER_01_ID}@${REMOTE_SERVER_01_HOST}:${REMOTE_SERVER_01_SAVE_PATH}'
+                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} docker load -i ${REMOTE_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} rm ${REMOTE_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} docker stop ${CONTAINER_NAME} || true'
+                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} docker rm ${CONTAINER_NAME} || true'
+                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} docker rmi ${IMAGE_NAME}:${IMAGE_AS_IS_VERSION} || true'
                 sh '''
                    ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} \
                    docker run \
-                   --name testjenkins \
+                   --name ${CONTAINER_NAME} \
                    -d \
                    -p 12000:12000 \
-                   ${IMAGE_NAME}:${IMAGE_VERSION}
+                   ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION}
                    '''
 
-                sh 'scp -P ${REMOTE_SERVER_02_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar ${REMOTE_SERVER_02_ID}@${REMOTE_SERVER_02_HOST}:${REMOTE_SERVER_02_SAVE_PATH}'
-                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} docker load -i ${REMOTE_SERVER_02_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
-                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} rm ${REMOTE_SERVER_02_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
+                /*
+                 * 서버 #2 원격 배포 진행
+                 */
+                sh 'scp -P ${REMOTE_SERVER_02_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar ${REMOTE_SERVER_02_ID}@${REMOTE_SERVER_02_HOST}:${REMOTE_SERVER_02_SAVE_PATH}'
+                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} docker load -i ${REMOTE_SERVER_02_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} rm ${REMOTE_SERVER_02_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} docker stop ${CONTAINER_NAME} || true'
+                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} docker rm ${CONTAINER_NAME} || true'
+                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} docker rmi ${IMAGE_NAME}:${IMAGE_AS_IS_VERSION} || true'
                 sh '''
                    ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} \
                    docker run \
-                   --name testjenkins \
+                   --name ${CONTAINER_NAME} \
                    -d \
                    -p 12000:12000 \
-                   ${IMAGE_NAME}:${IMAGE_VERSION}
+                   ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION}
                    '''
 
-                sh 'docker rmi ${IMAGE_NAME}:${IMAGE_VERSION}'
-                sh 'rm -rf /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_VERSION}.tar'
+                /*
+                 * AS-IS 이미지 및 파일 제거
+                 */
+                sh 'docker rmi ${IMAGE_NAME}:${IMAGE_AS_IS_VERSION} || true'
+                sh 'rm -rf /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_AS_IS_VERSION}.tar'
             }
         }
     }
