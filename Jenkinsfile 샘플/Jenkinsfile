@@ -1,3 +1,7 @@
+/**
+ * This declarative script is written by Youngwoo Yoon from Hansol Inticube Platform Dev 2
+ */
+
 pipeline {
     agent any
 
@@ -24,6 +28,17 @@ pipeline {
     }
 
     stages {
+        stage('Intro') {
+            echo '''
+██████╗ ██╗      █████╗ ████████╗███████╗ ██████╗ ██████╗ ███╗   ███╗    ██████╗ ███████╗██╗   ██╗    ██████╗ 
+██╔══██╗██║     ██╔══██╗╚══██╔══╝██╔════╝██╔═══██╗██╔══██╗████╗ ████║    ██╔══██╗██╔════╝██║   ██║    ╚════██╗
+██████╔╝██║     ███████║   ██║   █████╗  ██║   ██║██████╔╝██╔████╔██║    ██║  ██║█████╗  ██║   ██║     █████╔╝
+██╔═══╝ ██║     ██╔══██║   ██║   ██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║    ██║  ██║██╔══╝  ╚██╗ ██╔╝    ██╔═══╝ 
+██║     ███████╗██║  ██║   ██║   ██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║    ██████╔╝███████╗ ╚████╔╝     ███████╗
+╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝    ╚═════╝ ╚══════╝  ╚═══╝      ╚══════╝
+                 '''
+        }
+
         stage('Build') {
             steps {
                 echo '''
@@ -82,10 +97,11 @@ pipeline {
                    ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION}
                    '''
 
+                echo '개발계 서버 #1 원격 배포가 완료되었습니다. 안정화 작업을 시작합니다.'
                 script {
-                    for (int i = 1; i <= 600; i++) {
-                        echo '${i}'
-                        sh 'sleep 0.1'
+                    for (int i = 1; i <= 45; i++) {
+                        echo i + '초'
+                        sh 'sleep 1s'
                     }
                 }
 
@@ -168,8 +184,8 @@ pipeline {
                    '''
 
                 /* AS-IS 이미지 및 파일 제거 */
-                sh 'docker rmi ${IMAGE_NAME}:${IMAGE_AS_IS_VERSION} || true'
-                sh 'rm -rf /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_AS_IS_VERSION}.tar'
+                sh 'docker rmi ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION} || true'
+                sh 'rm -rf /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
             }
         }
     }
