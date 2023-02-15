@@ -3,19 +3,24 @@ pipeline {
 
     environment {
         IMAGE_NAME = "testjenkins"
-        IMAGE_AS_IS_VERSION = "0.12-dev"
-        IMAGE_TO_BE_VERSION = "0.10-dev"
+        IMAGE_AS_IS_VERSION = "0.10-dev"
+        IMAGE_TO_BE_VERSION = "0.11-dev"
         CONTAINER_NAME = "testjenkins"
 
-        REMOTE_SERVER_01_HOST = "192.168.53.9"
-        REMOTE_SERVER_01_PORT = "22"
-        REMOTE_SERVER_01_ID = "jenkins"
-        REMOTE_SERVER_01_SAVE_PATH = "~"
+        DEV_SERVER_01_HOST = "192.168.213.3"
+        DEV_SERVER_01_PORT = "22"
+        DEV_SERVER_01_ID = "jenkins"
+        DEV_SERVER_01_SAVE_PATH = "~"
 
-        REMOTE_SERVER_02_HOST = "192.168.212.3"
-        REMOTE_SERVER_02_PORT = "22"
-        REMOTE_SERVER_02_ID = "jenkins"
-        REMOTE_SERVER_02_SAVE_PATH = "~"
+        PROD_SERVER_01_HOST = "192.168.53.9"
+        PROD_SERVER_01_PORT = "22"
+        PROD_SERVER_01_ID = "jenkins"
+        PROD_SERVER_01_SAVE_PATH = "~"
+
+        PROD_SERVER_02_HOST = "192.168.212.3"
+        PROD_SERVER_02_PORT = "22"
+        PROD_SERVER_02_ID = "jenkins"
+        PROD_SERVER_02_SAVE_PATH = "~"
     }
 
     stages {
@@ -37,9 +42,7 @@ pipeline {
                      ╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═════╝                                                                                           
                      '''
 
-                /*
-                 * TO-BE 이미지 및 파일 생성
-                 */
+                /* TO-BE 이미지 및 파일 생성 */
                 sh 'docker build --rm -t ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION} .'
                 sh 'docker save -o /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION}'
             }
@@ -62,6 +65,49 @@ pipeline {
                         ██║   ███████╗███████║   ██║                       
                         ╚═╝   ╚══════╝╚══════╝   ╚═╝                       
                      '''
+
+                /* 개발계 서버 #1 원격 배포 진행 */
+                sh 'scp -P ${DEV_SERVER_01_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar ${DEV_SERVER_01_ID}@${DEV_SERVER_01_HOST}:${DEV_SERVER_01_SAVE_PATH}'
+                sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker load -i ${DEV_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} rm ${DEV_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker stop ${CONTAINER_NAME} || true'
+                sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker rm ${CONTAINER_NAME} || true'
+                sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker rmi ${IMAGE_NAME}:${IMAGE_AS_IS_VERSION} || true'
+                sh '''
+                   ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} \
+                   docker run \
+                   --name ${CONTAINER_NAME} \
+                   -d \
+                   -p 12000:12000 \
+                   ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION}
+                   '''
+                sh 'sleep 5s'
+
+                /* 간단한 HTTP Request 테스트 진행 */
+                script {
+                    try {
+                        def response = httpRequest "http://192.168.213.3:12000/testjenkins/ping"
+                        if (${response.status} == 200) {
+                            echo '테스트에 성공하였습니다. 운영계 배포를 진행합니다.'
+                        } else {
+                            /* TO-BE 이미지, 파일, 컨테이너 제거 */
+                            sh 'docker rmi ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION} || true'
+                            sh 'rm -rf /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                            sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker stop ${CONTAINER_NAME} || true'
+                            sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker rm ${CONTAINER_NAME} || true'
+                            sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker rmi ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION} || true'
+                            error '상태코드가 200이 아닌 다른 값을 전달받았습니다. 운영계 배포를 중단합니다.(' + ${response.status} + ')'
+                        }
+                    } catch (e) {
+                        /* TO-BE 이미지, 파일, 컨테이너 제거 */
+                        sh 'docker rmi ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION} || true'
+                        sh 'rm -rf /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                        sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker stop ${CONTAINER_NAME} || true'
+                        sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker rm ${CONTAINER_NAME} || true'
+                        sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker rmi ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION} || true'
+                        error '테스트 도중 예외가 발생하였습니다.(' + e.toString() + ')'
+                    }
+                }
             }
         }
 
@@ -83,17 +129,15 @@ pipeline {
                      ╚═════╝ ╚══════╝╚═╝     ╚══════╝ ╚═════╝    ╚═╝                                                                                          
                      '''
 
-                /*
-                 * 서버 #1 원격 배포 진행
-                 */
-                sh 'scp -P ${REMOTE_SERVER_01_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar ${REMOTE_SERVER_01_ID}@${REMOTE_SERVER_01_HOST}:${REMOTE_SERVER_01_SAVE_PATH}'
-                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} docker load -i ${REMOTE_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
-                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} rm ${REMOTE_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
-                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} docker stop ${CONTAINER_NAME} || true'
-                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} docker rm ${CONTAINER_NAME} || true'
-                sh 'ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} docker rmi ${IMAGE_NAME}:${IMAGE_AS_IS_VERSION} || true'
+                /* 운영계 서버 #1 원격 배포 진행 */
+                sh 'scp -P ${PROD_SERVER_01_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar ${PROD_SERVER_01_ID}@${PROD_SERVER_01_HOST}:${PROD_SERVER_01_SAVE_PATH}'
+                sh 'ssh -p ${PROD_SERVER_01_PORT} -l ${PROD_SERVER_01_ID} ${PROD_SERVER_01_HOST} docker load -i ${PROD_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                sh 'ssh -p ${PROD_SERVER_01_PORT} -l ${PROD_SERVER_01_ID} ${PROD_SERVER_01_HOST} rm ${PROD_SERVER_01_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                sh 'ssh -p ${PROD_SERVER_01_PORT} -l ${PROD_SERVER_01_ID} ${PROD_SERVER_01_HOST} docker stop ${CONTAINER_NAME} || true'
+                sh 'ssh -p ${PROD_SERVER_01_PORT} -l ${PROD_SERVER_01_ID} ${PROD_SERVER_01_HOST} docker rm ${CONTAINER_NAME} || true'
+                sh 'ssh -p ${PROD_SERVER_01_PORT} -l ${PROD_SERVER_01_ID} ${PROD_SERVER_01_HOST} docker rmi ${IMAGE_NAME}:${IMAGE_AS_IS_VERSION} || true'
                 sh '''
-                   ssh -p ${REMOTE_SERVER_01_PORT} -l ${REMOTE_SERVER_01_ID} ${REMOTE_SERVER_01_HOST} \
+                   ssh -p ${PROD_SERVER_01_PORT} -l ${PROD_SERVER_01_ID} ${PROD_SERVER_01_HOST} \
                    docker run \
                    --name ${CONTAINER_NAME} \
                    -d \
@@ -101,17 +145,15 @@ pipeline {
                    ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION}
                    '''
 
-                /*
-                 * 서버 #2 원격 배포 진행
-                 */
-                sh 'scp -P ${REMOTE_SERVER_02_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar ${REMOTE_SERVER_02_ID}@${REMOTE_SERVER_02_HOST}:${REMOTE_SERVER_02_SAVE_PATH}'
-                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} docker load -i ${REMOTE_SERVER_02_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
-                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} rm ${REMOTE_SERVER_02_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
-                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} docker stop ${CONTAINER_NAME} || true'
-                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} docker rm ${CONTAINER_NAME} || true'
-                sh 'ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} docker rmi ${IMAGE_NAME}:${IMAGE_AS_IS_VERSION} || true'
+                /* 운영계 서버 #2 원격 배포 진행 */
+                sh 'scp -P ${PROD_SERVER_02_PORT} /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar ${PROD_SERVER_02_ID}@${PROD_SERVER_02_HOST}:${PROD_SERVER_02_SAVE_PATH}'
+                sh 'ssh -p ${PROD_SERVER_02_PORT} -l ${PROD_SERVER_02_ID} ${PROD_SERVER_02_HOST} docker load -i ${PROD_SERVER_02_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                sh 'ssh -p ${PROD_SERVER_02_PORT} -l ${PROD_SERVER_02_ID} ${PROD_SERVER_02_HOST} rm ${PROD_SERVER_02_SAVE_PATH}/${IMAGE_NAME}-${IMAGE_TO_BE_VERSION}.tar'
+                sh 'ssh -p ${PROD_SERVER_02_PORT} -l ${PROD_SERVER_02_ID} ${PROD_SERVER_02_HOST} docker stop ${CONTAINER_NAME} || true'
+                sh 'ssh -p ${PROD_SERVER_02_PORT} -l ${PROD_SERVER_02_ID} ${PROD_SERVER_02_HOST} docker rm ${CONTAINER_NAME} || true'
+                sh 'ssh -p ${PROD_SERVER_02_PORT} -l ${PROD_SERVER_02_ID} ${PROD_SERVER_02_HOST} docker rmi ${IMAGE_NAME}:${IMAGE_AS_IS_VERSION} || true'
                 sh '''
-                   ssh -p ${REMOTE_SERVER_02_PORT} -l ${REMOTE_SERVER_02_ID} ${REMOTE_SERVER_02_HOST} \
+                   ssh -p ${PROD_SERVER_02_PORT} -l ${PROD_SERVER_02_ID} ${PROD_SERVER_02_HOST} \
                    docker run \
                    --name ${CONTAINER_NAME} \
                    -d \
@@ -119,9 +161,7 @@ pipeline {
                    ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION}
                    '''
 
-                /*
-                 * AS-IS 이미지 및 파일 제거
-                 */
+                /* AS-IS 이미지 및 파일 제거 */
                 sh 'docker rmi ${IMAGE_NAME}:${IMAGE_AS_IS_VERSION} || true'
                 sh 'rm -rf /var/jenkins_home/docker_images/${IMAGE_NAME}-${IMAGE_AS_IS_VERSION}.tar'
             }
