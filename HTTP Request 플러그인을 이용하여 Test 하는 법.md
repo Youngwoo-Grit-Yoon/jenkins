@@ -8,3 +8,6 @@
 6. 설치 후 Jenkins를 리스타트 한다.
 
 ![](./img/http_request.png)
+
+## 사용법
+https://www.jenkins.io/doc/pipeline/steps/http_request/  
