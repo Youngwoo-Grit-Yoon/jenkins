@@ -3,21 +3,21 @@ pipeline {
 
     environment {
         IMAGE_NAME = "testjenkins"
-        IMAGE_AS_IS_VERSION = "0.10-dev"
-        IMAGE_TO_BE_VERSION = "0.11-dev"
+        IMAGE_AS_IS_VERSION = ""
+        IMAGE_TO_BE_VERSION = "0.10-dev"
         CONTAINER_NAME = "testjenkins"
 
-        DEV_SERVER_01_HOST = "192.168.213.3"
+        DEV_SERVER_01_HOST = "192.168.53.9"
         DEV_SERVER_01_PORT = "22"
         DEV_SERVER_01_ID = "jenkins"
         DEV_SERVER_01_SAVE_PATH = "~"
 
-        PROD_SERVER_01_HOST = "192.168.53.9"
+        PROD_SERVER_01_HOST = "192.168.212.3"
         PROD_SERVER_01_PORT = "22"
         PROD_SERVER_01_ID = "jenkins"
         PROD_SERVER_01_SAVE_PATH = "~"
 
-        PROD_SERVER_02_HOST = "192.168.212.3"
+        PROD_SERVER_02_HOST = "192.168.213.3"
         PROD_SERVER_02_PORT = "22"
         PROD_SERVER_02_ID = "jenkins"
         PROD_SERVER_02_SAVE_PATH = "~"
@@ -81,13 +81,19 @@ pipeline {
                    -p 12000:12000 \
                    ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION}
                    '''
-                sh 'sleep 5s'
+
+                script {
+                    for (int i = 1; i <= 600; i++) {
+                        echo '${i}'
+                        sh 'sleep 0.1'
+                    }
+                }
 
                 /* 간단한 HTTP Request 테스트 진행 */
                 script {
                     try {
-                        def response = httpRequest "http://192.168.213.3:12000/testjenkins/ping"
-                        if (${response.status} == 200) {
+                        def response = httpRequest 'http://192.168.53.9:12000/testjenkins/ping'
+                        if (response.status == 200) {
                             echo '테스트에 성공하였습니다. 운영계 배포를 진행합니다.'
                         } else {
                             /* TO-BE 이미지, 파일, 컨테이너 제거 */
@@ -96,7 +102,7 @@ pipeline {
                             sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker stop ${CONTAINER_NAME} || true'
                             sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker rm ${CONTAINER_NAME} || true'
                             sh 'ssh -p ${DEV_SERVER_01_PORT} -l ${DEV_SERVER_01_ID} ${DEV_SERVER_01_HOST} docker rmi ${IMAGE_NAME}:${IMAGE_TO_BE_VERSION} || true'
-                            error '상태코드가 200이 아닌 다른 값을 전달받았습니다. 운영계 배포를 중단합니다.(' + ${response.status} + ')'
+                            error '상태코드가 200이 아닌 다른 값을 전달받았습니다. 운영계 배포를 중단합니다.(' + response.status + ')'
                         }
                     } catch (e) {
                         /* TO-BE 이미지, 파일, 컨테이너 제거 */
