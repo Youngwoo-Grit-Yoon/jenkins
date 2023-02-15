@@ -11,3 +11,4 @@
 
 ## 사용법
 https://www.jenkins.io/doc/pipeline/steps/http_request/  
+https://plugins.jenkins.io/http_request/  
