@@ -1,0 +1,1 @@
+![](../img/setting_jenkinsfile.png)
