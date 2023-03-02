@@ -3,6 +3,16 @@
 Genesys Cloud Resource API Server
 ## 버전
 1.15
+## 릴리즈 노트
+<details>
+<summary>version 1.15</summary>
+- 토큰 리프레시 기능 추가
+</details>
+<details>
+<summary>version 1.0</summary>
+- 최초 배포
+</details>
+
 ## 설명
 Genesys Cloud 및 클라이언트 사이에서 시스템 리소스 CRUD 기능을 수행한다.
 ## 의존성
